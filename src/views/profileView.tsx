@@ -1,4 +1,4 @@
-import { StyleSheet, Text, Image, View } from 'react-native';
+import { StyleSheet, Text, Image, View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Card from '@/components/Card';
 import { Link } from 'expo-router';
@@ -51,53 +51,55 @@ export default function App() {
 
 
   return (
+    <ScrollView>
     <SafeAreaView>
         <Text style={styles.title}>Welcome to your profile !</Text>
         
         <Card>
             <Link href="/">
-            <View style={styles.rowContainer}>
-            <Image source={require('@/assets/images/favorites-icon.png')} style={styles.category} />
-            <View style= {styles.textColumn}>
-                <Text style={styles.categoryTitle}>Your favorite games</Text>
-                <Text>{games.filter((game) => game.liked).length} games liked</Text>
-            </View>
-            </View>
+                <View style={styles.rowContainer}>
+                    <Image source={require('@/assets/images/favorites-icon.png')} style={styles.category} />
+                    
+                    <View style= {styles.textColumn}>
+                        <Text style={styles.categoryTitle}>Your favorite games</Text>
+                        <Text>{games.filter((game) => game.liked).length} games liked</Text>
+                    </View>
+                </View>
             </Link>
         </Card>
 
+        
         <Card>
             <Link href="/"> 
-            <View style={styles.rowContainer}>
-            <Image source={require('@/assets/images/settings-icon.svg')} style={styles.category} />
-            <View style= {styles.textColumn}>
-                <Text style={styles.categoryTitle}>Your settings</Text>
-                <Text>App preferences</Text>
-            </View>
-            </View>
+                <View style={styles.rowContainer}>
+                    <Image source={require('@/assets/images/settings-icon.png')} style={styles.category} />
+                    
+                    <View style= {styles.textColumn}>
+                        <Text style={styles.categoryTitle}>Your settings</Text>
+                        <Text>App preferences</Text>
+                    </View>
+                </View>
             </Link>
         </Card>
 
 
         <Text style={styles.title}>Recent favorites</Text>
 
-    <Card>
-      {recentFavorites.map((fav) => (
-        <View key={fav.id} style={styles.recentItem}>
-          <Image
-            source={require('@/assets/images/recent-favorite-icon.png')}
-            style={styles.recentFavoriteIcon}
-          />
+        <Card>
+        {recentFavorites.map((fav) => (
+            <View key={fav.id} style={styles.recentItem}>
+                <Image source={require('@/assets/images/recent-favorite-icon.png')} style={styles.recentFavoriteIcon}/>
 
-          <View style={styles.recentItemTextColumn}>
-            <Text style={styles.recentFavoriteName}>{fav.name}</Text>
-            <Text style={styles.recentFavoriteDate}>{timeSince(fav.date)}</Text>
-          </View>
-        </View>
-      ))}
-    </Card>
+                <View style={styles.recentItemTextColumn}>
+                    <Text style={styles.recentFavoriteName}>{fav.name}</Text>
+                    <Text style={styles.recentFavoriteDate}>{timeSince(fav.date)}</Text>
+                </View>
+            </View>
+        ))}
+        </Card>
 
     </SafeAreaView>
+    </ScrollView>
   );
 }
 
