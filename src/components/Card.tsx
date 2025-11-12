@@ -21,8 +21,8 @@ const StyleSheet = {
         shadowOpacity: 0.1,
         shadowRadius: 4,
         elevation: 3,
-        marginVertical: 8,
-        marginHorizontal: 16,
+        marginVertical: 2,
+        marginHorizontal: 2,
     },
     cardContent: {
         padding: 16,
