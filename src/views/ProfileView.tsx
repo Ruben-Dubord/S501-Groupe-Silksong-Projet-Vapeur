@@ -56,7 +56,7 @@ export default function App() {
         <Text style={styles.title}>Welcome to your profile !</Text>
         
         <Card>
-            <Link href="/">
+            <Link href="/favorites">
                 <View style={styles.rowContainer}>
                     <Image source={require('@/assets/images/favorites-icon.png')} style={styles.category} />
                     
