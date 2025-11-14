@@ -1,4 +1,4 @@
-import { StyleSheet, Text, Image, View, TouchableOpacity, FlatList, Alert, Dimensions } from 'react-native';
+import { StyleSheet, Text, Image, View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Card from '@/components/Card';
 import { Link } from 'expo-router';
@@ -11,183 +11,154 @@ const ITEM_MARGIN = 6;
 // Largeur exacte d’un item pour qu’il n’y ait jamais de chevauchement
 const ITEM_WIDTH = (screenWidth - ITEM_MARGIN * (numColumns * 2)) / numColumns;
 
-// ---- Responsive Layout ----
-const screenWidth = Dimensions.get("window").width;
-const numColumns = 3;
-const ITEM_MARGIN = 6;
-
-// Largeur exacte d’un item pour qu’il n’y ait jamais de chevauchement
-const ITEM_WIDTH = (screenWidth - ITEM_MARGIN * (numColumns * 2)) / numColumns;
-
 export default function App() {
 
-    const [gameList, setGameList] = useState([
-        { id: 1, name: "Hollow Knight", image: require("../assets/images/GameImages/10.jpg"), liked: true },
-        { id: 2, name: "Elden Ring", image: require("../assets/images/GameImages/10.jpg"), liked: true },
-        { id: 3, name: "Dark Souls Remastered", image: require("../assets/images/GameImages/10.jpg"), liked: true },
-        { id: 4, name: "The Legend of Zelda: Tears of the Kingdom", image: require("../assets/images/GameImages/10.jpg"), liked: true },
-        { id: 5, name: "Divinity Original Sin II – Definitive Edition", image: require("../assets/images/GameImages/10.jpg"), liked: true }
-    ]);
+    const games = [
+    { id: 1, name: "Hollow Knight", image: "../assets/games/hollow-knight.png", liked: true },
+    { id: 2, name: "Elden Ring", image: "../assets/games/elden-ring.png", liked: true },
+    { id: 3, name: "Dark Souls", image: "../assets/games/dark-souls.png", liked: true },
+    { id: 4, name: "Celeste", image: "../assets/games/celeste.png", liked: false },
+    {
+        id: 5,
+        name: "Stardew Valley",
+        image: "../assets/games/stardew-valley.png",
+        liked: false,
+    },
+    ];
 
-    const handleUnlike = (id: number) => {
-        Alert.alert(
-            "Confirm Deletion",
-            "Are you sure you want to remove this game from your favorites?",
-            [
-                { text: "Cancel", style: "cancel" },
-                {
-                    text: "OK",
-                    onPress: () => {
-                        setGameList(prev => prev.filter(game => game.id !== id));
-                    },
-                },
-            ]
-        );
+    const recentFavorites = [
+        { id: 1, name: "Hollow Knight", date: "2025-11-12 12:30:35" },
+        { id: 2, name: "Elden Ring", date: "2024-06-08 00:00:00"},
+        { id: 3, name: "Dark Souls", date: "2025-11-12 14:54:12"}
+    ];
+
+
+    // Function to calculate time since a given date
+    const timeSince = (dateString: string): string => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const seconds = Math.floor((+now - +date) / 1000);
+    
+    const intervals: Record<string, number> = {
+        year: 31536000,
+        month: 2592000,
+        day: 86400,
+        hour: 3600,
+        minute: 60,
+    };
+    
+    if (seconds < 60) return "just now";
+    for (let [unit, value] of Object.entries(intervals)) {
+        const interval = Math.floor(seconds / value);
+        if (interval >= 1) {
+        return interval === 1 ? `1 ${unit} ago` : `${interval} ${unit}s ago`;
+        }
+    }
+    return "";
     };
 
-    const renderItem = ({ item }: { item: typeof gameList[0] }) => (
-        <View style={styles.item}>
-            <Card>
 
-                <Link
-                    href={{
-                        pathname: '/games/[id]',
-                        params: { id: item.id, name: item.name },
-                    }}
-                    asChild
-                >
-                    <TouchableOpacity>
+  return (
+    <ScrollView>
+    <SafeAreaView>
+        <Text style={styles.title}>Welcome to your profile !</Text>
+        
+        <Card>
+            <Link href="/">
+                <View style={styles.rowContainer}>
+                    <Image source={require('@/assets/images/favorites-icon.png')} style={styles.category} />
+                    
+                    <View style= {styles.textColumn}>
+                        <Text style={styles.categoryTitle}>Your favorite games</Text>
+                        <Text>{games.filter((game) => game.liked).length} games liked</Text>
+                    </View>
+                </View>
+            </Link>
+        </Card>
 
-                        {/* TITRE LIMITÉ À 2 LIGNES */}
-                        <Text
-                            style={styles.titre}
-                            numberOfLines={2}
-                            ellipsizeMode="tail"
-                        >
-                            {item.name}
-                        </Text>
+        
+        <Card>
+            <Link href="/"> 
+                <View style={styles.rowContainer}>
+                    <Image source={require('@/assets/images/settings-icon.png')} style={styles.category} />
+                    
+                    <View style= {styles.textColumn}>
+                        <Text style={styles.categoryTitle}>Your settings</Text>
+                        <Text>App preferences</Text>
+                    </View>
+                </View>
+            </Link>
+        </Card>
 
-                        <View style={styles.imageContainer}>
-                            <Image style={styles.image} source={item.image} />
-                        </View>
 
-                    </TouchableOpacity>
-                </Link>
+        <Text style={styles.title}>Recent favorites</Text>
 
-                <TouchableOpacity
-                    style={styles.unlikeButton}
-                    onPress={() => handleUnlike(item.id)}
-                >
-                    <Text style={styles.unlikeButtonText}>Unlike</Text>
-                </TouchableOpacity>
+        <Card>
+        {recentFavorites.map((fav) => (
+            <View key={fav.id} style={styles.recentItem}>
+                <Image source={require('@/assets/images/recent-favorite-icon.png')} style={styles.recentFavoriteIcon}/>
 
-            </Card>
-        </View>
-    );
+                <View style={styles.recentItemTextColumn}>
+                    <Text style={styles.recentFavoriteName}>{fav.name}</Text>
+                    <Text style={styles.recentFavoriteDate}>{timeSince(fav.date)}</Text>
+                </View>
+            </View>
+        ))}
+        </Card>
 
-    if (gameList.length === 0) {
-        return (
-            <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.title}>Start liking games !</Text>
-                <Text style={{ textAlign: 'center', marginBottom: 20 }}>You have no favorites.</Text>
-                <Link href="/" asChild>
-                    <TouchableOpacity style={styles.discoverButton}>
-                        <Text style={styles.discoverButtonText}>Back to Home</Text>
-                    </TouchableOpacity>
-                </Link>
-            </SafeAreaView>
-        );
-    }
-
-    return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <Text style={styles.title}>Here are your favorite games !</Text>
-
-            <FlatList
-                style={styles.container}
-                keyExtractor={(game) => game.id.toString()}
-                data={gameList}
-                renderItem={renderItem}
-                numColumns={numColumns}
-            />
-        </SafeAreaView>
-    );
+    </SafeAreaView>
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
 
-    title: {
-        fontSize: 24,
-        fontWeight: '600',
-        marginBottom: 20,
-        marginTop: 20,
-        textAlign: 'center',
-    },
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+  },
 
-    container: {
-        flex: 1,
-        paddingTop: 10,
-    },
+  category: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+  },
 
-    discoverButton: {
-        marginTop: 20,
-        padding: 12,
-        backgroundColor: '#007AFF',
-        borderRadius: 8,
-        alignItems: 'center',
-        marginHorizontal: 20,
-    },
+  textColumn: {
+    marginLeft: 12,
+    justifyContent: 'center',
+  },
 
-    discoverButtonText: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: '600',
-    },
+  categoryTitle: {
+    fontWeight: '600',
+    marginBottom: 4,
+    fontSize: 18
+  },
 
-    // ---- Responsive Grid ----
-    item: {
-        width: ITEM_WIDTH,
-        margin: ITEM_MARGIN,
-    },
+  recentFavoriteIcon: {
+    width: 20,
+    height: 20,
+    borderRadius: 8,
+  },
 
-    imageContainer: {
-        width: ITEM_WIDTH - 20,
-        height: ITEM_WIDTH - 20, // carré responsive
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10,
-        overflow: 'hidden',
-        alignSelf: 'center',
-        marginTop: 6,
-    },
+  recentItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
 
-    image: {
-        width: '100%',
-        height: '100%',
-        resizeMode: 'cover',
-    },
+  recentItemTextColumn: {
+    marginLeft: 12,
+    justifyContent: 'center',
+  },
 
-    // ---- TITRE LIMITÉ À 2 LIGNES ----
-    titre: {
-        fontSize: 16,
-        fontWeight: '500',
-        marginVertical: 5,
-        textAlign: 'center',
-        height: 40,     // fixe pour que toutes les Cards aient la même hauteur 💡
-    },
+  recentFavoriteName: {
+    fontSize: 16,
+  },
 
-    unlikeButton: {
-        marginTop: 10,
-        padding: 10,
-        backgroundColor: 'red',
-        borderRadius: 8,
-        alignItems: 'center',
-        width: '100%',
-    },
-
-    unlikeButtonText: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: '600',
-    },
-});
+  recentFavoriteDate: {
+    color: 'gray',
+  }
+}); 
