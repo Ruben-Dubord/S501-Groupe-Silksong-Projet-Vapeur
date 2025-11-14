@@ -1,7 +1,7 @@
 import { Stack, useLocalSearchParams } from "expo-router";
 import { Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { DBProvider, useFetchers, getGameImage } from "../database";
+import { DBProvider, useFetchers, getGameImage } from "../../database";
 import { useEffect, useState } from "react";
 
 function GameSetup() {
@@ -18,8 +18,6 @@ function GameSetup() {
     Liked: boolean;
   };
 
-
-export default function game() {
   const params = useLocalSearchParams();
   const title = params.title as string;
   return (

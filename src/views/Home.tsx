@@ -9,7 +9,6 @@ type gameProps = {
   image: any;
 };
 
-
 const numColumns = 2;
 
 // Render chaque jeu(item) dans la FlatList en card
