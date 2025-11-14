@@ -96,12 +96,6 @@ function IndexSetup() {
   );
 }
 
-type gameProps = {
-  id: number;
-  name: string;
-  image: any;
-};
-
 export default function Index() {
   return (
     <DBProvider>
