@@ -6,8 +6,8 @@ import urllib.request
 This script allows the developers to retrieve image file from internet into a local directory from a json database.
 """
 
-database = pd.read_json("./database/games.json")
-image_dir = "./source/assets/images/GameImages/"
+database = pd.read_json("./src/database/games.json")
+image_dir = "./src/assets/images/GameImages/"
 
 print("Starting image retrieval...")
 
@@ -19,6 +19,6 @@ for index, row in database.iterrows():
         urllib.request.urlretrieve(image_url, image_path)
         database.replace(image_url, image_path, inplace=True)
 
-database.to_json("./database/games.json", orient="records", indent=2)
+database.to_json("./src/database/games.json", orient="records", indent=2)
 
 print("Image retrieval completed.")
