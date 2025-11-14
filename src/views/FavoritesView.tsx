@@ -2,7 +2,6 @@ import { StyleSheet, Text, Image, View, TouchableOpacity, FlatList, Alert, Dimen
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Card from '@/components/Card';
 import { Link } from 'expo-router';
-import { useState } from 'react';
 
 // ---- Responsive Layout ----
 const screenWidth = Dimensions.get("window").width;
