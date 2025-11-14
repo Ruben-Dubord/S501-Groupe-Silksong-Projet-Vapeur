@@ -5,5 +5,3 @@ src/.vscode/
 .env
 .DS_Store
 src/database/temp.json
-expo-env.d.ts
-package-lock.json
