@@ -1,43 +1,53 @@
-import { StyleSheet } from 'react-native';
+export const colors = {
+  background: "#1A1A1A",
+  headerBackground: "#424242",
+  textPrimary: "#FFFFFF",
+  textSecondary: "#888",
+  border: "#3A3A3A",
+  accent: "#D11A2A",
+  accentLight: "#FF4A5C",
 
-export const header_colors = {
-    background: "#555557ff",
-    primary: "#000000",
-    secondary: "#888"
+  searchBarBackground: "#FFFFFF",
+  searchText: "#000000",
+
+  tagBackground: "#2F2F2F",
+  tagActiveBackground: "#D11A2A",
+  tagText: "#E0E0E0",
+  tagActiveText: "#FFFFFF",
+
+  bottomBar: "#2C2C2C",
+  bottomIconActive: "#FFFFFF",
+  bottomIconInactive: "#888888",
+
+  badgeBackground: "#E16E7A",
+  badgeText: "#FFFFFF"
 };
 
-export const body_colors = {
-    background: "#000000",
-    primary: "#FFFFFF"
-};
+export const spacing = {
+  extrasmall : 4,
+  small : 8,
+  medium : 12,
+  large : 16,
+  extralarge : 36
+}
+
+export const radius = {
+  small : 4,
+  medium : 8,
+  large : 12,
+  pill : 999
+}
+
+export const fontSize = {
+  extrasmall : 12,
+  small : 14,
+  medium : 16,
+  large : 20,
+  extralarge : 26
+}
 
 export const fonts = {
-    regular: "Comfortaa",
-    bold: "Comfortaa-Bold"
+  regular: "OpenSans-Regular",
+  bold: "OpenSans-Bold",
+  semibold: "OpenSans-SemiBold"
 };
-
-export const styles = StyleSheet.create({
-  header: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-evenly",
-    backgroundColor: header_colors.background,
-    color: header_colors.primary,
-    fontFamily: fonts.regular,
-    padding: 8
-  },
-  header_paragraph: {
-    color: header_colors.primary,
-    fontFamily: fonts.bold,
-    fontSize: 18
-  },
-  body: {
-    backgroundColor: body_colors.background,
-  },
-  paragraph: {
-    color: body_colors.primary,
-    fontFamily: fonts.regular,
-    fontSize: 15
-  }
-});
