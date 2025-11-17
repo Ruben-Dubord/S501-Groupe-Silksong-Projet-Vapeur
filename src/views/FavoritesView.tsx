@@ -35,49 +35,58 @@ export default function App() {
         );
     };
 
-    const renderItem = ({ item }: { item: typeof gameList[0] }) => (
-      <View style={styles.item}>
-        <Card>
-          <Link
-            href={{
-              pathname: '/games/[id]',
-              params: { id: item.id, name: item.name },
-            }}
-          >
-            <Text style={styles.titre}>{item.name}</Text>
-            <Image style={styles.image} source={item.image} />
-          </Link>
-          <TouchableOpacity
-            style={styles.unlikeButton}
-            onPress={() => handleUnlike(item.id)}
-          >
-            <Text style={styles.unlikeButtonText}>Unlike</Text>
-          </TouchableOpacity>
-        </Card>
-      </View>
-    );
-    
-    const formatData = (data: typeof gameList, numColumns: number) => {
-      const numberOfFullRows = Math.floor(data.length / numColumns);
-      let numberOfElementsLastRow = data.length - numberOfFullRows * numColumns;
-    
-      while (
-        numberOfElementsLastRow !== numColumns &&
-        numberOfElementsLastRow !== 0
-      ) {
-        data.push({ id: -1, name: 'blank', image: '', liked: false });
-        numberOfElementsLastRow++;
+    const renderItem = ({ item }: { item: typeof gameList[0] }) => {
+      // Don't render blank items
+      if (item.id < 0) {
+        return null;
       }
-      return data;
+      
+      return (
+        <View style={styles.item}>
+          <Card>
+            <Link
+              href={{
+                pathname: '/games/[id]',
+                params: { id: item.id, name: item.name },
+              }}
+            >
+              <Text style={styles.titre}>{item.name}</Text>
+              <Image style={styles.image} source={item.image} />
+            </Link>
+            <TouchableOpacity
+              style={styles.unlikeButton}
+              onPress={() => handleUnlike(item.id)}
+            >
+              <Text style={styles.unlikeButtonText}>Unlike</Text>
+            </TouchableOpacity>
+          </Card>
+        </View>
+      );
     };
+    
+    
+        if (gameList.length === 0) {
+            return (
+                <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={styles.title}>Start liking games !</Text>
+                    <Text style={{ textAlign: 'center', marginBottom: 20 }}>You have no favorites.</Text>
+                    <Link href="/" asChild>
+                        <TouchableOpacity style={styles.discoverButton}>
+                            <Text style={styles.discoverButtonText}>Back to Home</Text>
+                        </TouchableOpacity>
+                    </Link>
+                </SafeAreaView>
+            );
+        }
 
+    
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Text style={styles.title}>Here are your favorite games !</Text>
                 <FlatList
                     style={styles.container}
                     keyExtractor={(game) => game.id.toString()}
-                    data={formatData(gameList, numColumns)}
+                    data={gameList}
                     renderItem={renderItem}
                     numColumns={numColumns}
                 />
