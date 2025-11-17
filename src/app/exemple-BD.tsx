@@ -36,7 +36,7 @@ function getGameImage(appId: number) {
   try {
     return gameImages[appId];
   } catch (e) {
-    return require("../assets/images/partial-react-logo.png");
+    return require("../assets/images/DefaultImage.jpg");
   }
 }
 
