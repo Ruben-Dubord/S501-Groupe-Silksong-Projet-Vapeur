@@ -21,7 +21,7 @@ const renderItem = ({ item }: { item: gameProps }) => {
       <Card>
         <Link
           href={{
-            pathname: "/games/[id]",
+            pathname: "../games/[id]",
             params: { title : item.name,id: item.id, name: item.name },
           }}
         >
