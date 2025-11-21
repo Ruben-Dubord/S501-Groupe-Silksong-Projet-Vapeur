@@ -16,10 +16,10 @@ export default function App() {
 
     const [gameList, setGameList] = useState([
         { id: 1, name: "Hollow Knight", image: require("../assets/images/GameImages/10.jpg"), liked: true },
-        { id: 2, name: "Elden Ring", image: require("../assets/images/GameImages/10.jpg"), liked: true },
+        { id: 2, name: "Monster Hunter Stories 2: Wings of Ruin", image: require("../assets/images/GameImages/10.jpg"), liked: true },
         { id: 3, name: "Dark Souls Remastered", image: require("../assets/images/GameImages/10.jpg"), liked: true },
         { id: 4, name: "The Legend of Zelda: Tears of the Kingdom", image: require("../assets/images/GameImages/10.jpg"), liked: true },
-        { id: 5, name: "Divinity Original Sin II – Definitive Edition", image: require("../assets/images/GameImages/10.jpg"), liked: true }
+        { id: 5, name: "Elden Ring", image: require("../assets/images/GameImages/10.jpg"), liked: true }
     ]);
 
     const handleUnlike = (id: number) => {
