@@ -9,6 +9,7 @@ type gameProps = {
   image: any;
 };
 
+
 const numColumns = 2;
 
 // Render chaque jeu(item) dans la FlatList en card
@@ -24,7 +25,7 @@ const renderItem = ({ item }: { item: gameProps }) => {
             pathname: "/games/[id]",
             params: { title : item.name,id: item.id, name: item.name },
           }}
-        >
+        > 
           <Text style={styles.titre}>{item.name} </Text>
           <Image style={styles.image} source={item.image} />
         </Link>
@@ -65,7 +66,7 @@ export default function Home(HomeProps: { data: gameProps[] }) {
 const styles = StyleSheet.create({
   invisible: { backgroundColor: "transparent" },
   titre: { fontSize: 20, fontWeight: "bold", margin: 10 },
-  container: { padding: 2 },
+  container: { padding: 2,height: '100%' },
   item: { flex: 1, alignContent: "center", alignItems: "center" },
   image: { width: 100, height: 220 },
 });

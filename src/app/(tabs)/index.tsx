@@ -28,6 +28,12 @@ const games = [
   },
 ];
 
+type gameProps = {
+  id: number;
+  name: string;
+  image: any;
+};
+
 export default function Index() {
   //games va être un array déjà trié par recommandation
   return <Home data={games} />;
