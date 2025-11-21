@@ -73,7 +73,6 @@ const formatData = (data: gameProps[], numColumns: number) => {
 export default function Index() {
   return (
     <SafeAreaView>
-        <Link href="/favorites">Favorite Games</Link>
       <FlatList
         style={styles.container}
         keyExtractor={(game) => game.id.toString()}
