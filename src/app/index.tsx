@@ -2,81 +2,93 @@ import { Link } from "expo-router";
 import { Text, View ,Image, FlatList,StyleSheet} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Card from "../components/Card";
+import { DBProvider, useFetchers, getGameImage } from "./database";
+import { useEffect, useState } from "react";
 
-const games = [
-  {
-    id: 1,
-    name: "Hollow Knight",
-    image: require("../assets/images/GameImages/10.jpg"),
-  },
-  {
-    id: 2,
-    name: "Elden Ring",
-    image: require("../assets/images/GameImages/10.jpg"),
-  },
-  {
-    id: 3,
-    name: "Dark Souls",
-    image: require("../assets/images/GameImages/10.jpg"),
-  },
-  {
-    id: 4,
-    name: "Celeste",
-    image: require("../assets/images/GameImages/10.jpg"),
-  },
-  {
-    id: 5,
-    name: "Stardew Valley",
-    image: require("../assets/images/GameImages/10.jpg"),
-  },
-];
+const styles= StyleSheet.create({
+  titre: { fontSize: 20, fontWeight: "bold", margin: 10 },
+  container: { padding: 2 },
+  item: {flex:1, alignContent:'center', alignItems:'center'},
+  image: { width:220,height:100}
+});
 
-type gameProps = {
-  id: number;
-  name: string;
-  image: any;
-};
+function IndexSetup() {
 
-const numColumns = 2;
+  type game = {
+    AppID: number;
+    Name: string;
+    RequiredAge: number;
+    Price: number;
+    Description: string;
+    HeaderImage: any;
+    Developers: string;
+    Publishers: string;
+    Tags: string;
+    Liked: boolean;
+  };
+  
+  const { getAllGames } = useFetchers();
+    const [games, setGames] = useState<game[]>([]);
 
-// Render chaque jeu(item) dans la FlatList en card
-const renderItem = ({ item }: { item: gameProps }) => (
-  <View style={styles.item}>
-    <Card>
-      <Link
-        href={{
-          pathname: "/games/[id]",
-          params: { id: item.id, name: item.name },
-        }}>
-        <Text style={styles.titre} >{item.name} </Text>
-        <Image style={styles.image} source={item.image} />
-      </Link>
-    </Card>
-  </View>
-);
+    useEffect(() => {
+      async function load() {
+        const data = await getAllGames();
+        setGames(data as game[]);
+      }
+      load();
+    }, []);
 
-//remplit les lignes vides de la FlatList pour garder la structure en grille
-const formatData = (data: gameProps[], numColumns: number) => {
-  const numberOfFullRows = Math.floor(data.length / numColumns);
-  let numberOfElementsLastRow = data.length - numberOfFullRows * numColumns;
+  type gameProps = {
+    id: number;
+    name: string;
+    image: any;
+  };
 
-  while (
-    numberOfElementsLastRow !== numColumns &&
-    numberOfElementsLastRow !== 0
-  ) {
-    data.push({ id: -1, name: "blank", image: null });
-    numberOfElementsLastRow++;
+  const gamePropsArray: gameProps[] = games.map((game) => ({
+    id: game.AppID,
+    name: game.Name,
+    image: getGameImage(game.AppID),
+  }));
+
+  const numColumns = 2;
+
+  // Render chaque jeu(item) dans la FlatList en card
+  const renderItem = ({ item }: { item: gameProps }) => (
+    <View style={styles.item}>
+      <Card>
+        <Link
+          href={{
+            pathname: "/games/[id]",
+            params: { id: item.id, name: item.name },
+          }}>
+          <Text style={styles.titre} >{item.name} </Text>
+          <Image style={styles.image} source={item.image} />
+        </Link>
+      </Card>
+    </View>
+  );
+
+  //remplit les lignes vides de la FlatList pour garder la structure en grille
+  const formatData = (data: gameProps[], numColumns: number) => {
+    const numberOfFullRows = Math.floor(data.length / numColumns);
+    let numberOfElementsLastRow = data.length - numberOfFullRows * numColumns;
+
+    while (
+      numberOfElementsLastRow !== numColumns &&
+      numberOfElementsLastRow !== 0
+    ) {
+      data.push({ id: -1, name: "blank", image: null });
+      numberOfElementsLastRow++;
+    }
+    return data;
   }
-  return data;
-}
-
-export default function Index() {
+  
   return (
     <SafeAreaView>
       <FlatList
         style={styles.container}
         keyExtractor={(game) => game.id.toString()}
-        data={formatData(games, numColumns)}
+        data={formatData(gamePropsArray, numColumns)}
         renderItem={renderItem}
         numColumns={numColumns}
       />
@@ -84,9 +96,10 @@ export default function Index() {
   );
 }
 
-const styles= StyleSheet.create({
-  titre: { fontSize: 20, fontWeight: "bold", margin: 10 },
-  container: { padding: 2 },
-  item: {flex:1, alignContent:'center', alignItems:'center'},
-  image: { width:100,height:220}
-});
+export default function Index() {
+  return (
+    <DBProvider>
+      <IndexSetup />
+    </DBProvider>
+  );
+}
