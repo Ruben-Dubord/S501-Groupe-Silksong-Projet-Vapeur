@@ -1,8 +1,8 @@
 import { Link } from "expo-router";
 import { Text, View ,Image, FlatList,StyleSheet} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Card from "../components/Card";
-import { DBProvider, useFetchers, getGameImage } from "./database";
+import Card from "../../components/Card";
+import { DBProvider, useFetchers, getGameImage } from "../database";
 import { useEffect, useState } from "react";
 
 const styles= StyleSheet.create({
