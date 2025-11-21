@@ -18,6 +18,8 @@ function GameSetup() {
     Liked: boolean;
   };
 
+
+export default function game() {
   const params = useLocalSearchParams();
   const title = params.title as string;
   return (
