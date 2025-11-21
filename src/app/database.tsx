@@ -25,11 +25,6 @@ export function useFetchers() {
     return games;
   };
 
-  const getGameById = async (id: number) => {
-    const game = await db.getFirstAsync("SELECT * FROM games WHERE AppID = ?;", [id]);
-    return game;
-  };
-
   const getUnlikedGames = async () => {
     const games = await db.getAllAsync("SELECT * FROM games WHERE Liked = 0;");
     return games;
@@ -40,10 +35,14 @@ export function useFetchers() {
     return games;
   };
 
+  const setGameLikedStatus = async (id: number, liked: boolean) => {
+    await db.runAsync("UPDATE games SET Liked = ? WHERE AppID = ?;", [liked ? 1 : 0, id]);
+  }
+
   return {
     getAllGames,
-    getGameById,
     getUnlikedGames,
-    getLikedGames
+    getLikedGames,
+    setGameLikedStatus
   };
 }
