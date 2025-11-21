@@ -1,56 +1,25 @@
 import { useLocalSearchParams } from "expo-router";
-import { Text, View, Image, ScrollView } from "react-native";
+import { Text, Image, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { DBProvider, useFetchers, getGameImage } from "../database";
-import { useEffect, useState } from "react";
+import { getGameImage } from "../database";
 
-function GameSetup() {
-  type game = {
-    AppID: number;
-    Name: string;
-    RequiredAge: number;
-    Price: number;
-    Description: string;
-    HeaderImage: any;
-    Developers: string;
-    Publishers: string;
-    Tags: string;
-    Liked: boolean;
-  };
+export default function game() {
 
   const params = useLocalSearchParams();
-  const { getGameById } = useFetchers();
 
-  const [game, setGame] = useState<game>({} as game);
-
-  useEffect(() => {
-    async function loadGame() {
-      const gameData = await getGameById(Number(params.id));
-      setGame(gameData as game);
-    }
-    loadGame();
-  }, [params.id]);
   return (
     <SafeAreaView>
       <ScrollView>
-        <Image source={getGameImage(game.AppID)} />
-        <Text>ID Steam : {game.AppID}</Text>
-        <Text>Nom du jeu : {game.Name}</Text>
-        <Text>Age requis : {game.RequiredAge}</Text>
-        <Text>Prix : {game.Price} $</Text>
-        <Text>Description : {game.Description}</Text>
-        <Text>Développeurs : {game.Developers}</Text>
-        <Text>Éditeurs : {game.Publishers}</Text>
-        <Text>Tags : {game.Tags}</Text>
+        <Image source={getGameImage(Number(params.id))} />
+        <Text>ID Steam : {params.id}</Text>
+        <Text>Nom du jeu : {params.name}</Text>
+        <Text>Age requis : {params.requiredAge}</Text>
+        <Text>Prix : {params.price} $</Text>
+        <Text>Description : {params.description}</Text>
+        <Text>Développeurs : {params.developers}</Text>
+        <Text>Éditeurs : {params.publishers}</Text>
+        <Text>Tags : {params.tags}</Text>
       </ScrollView>
     </SafeAreaView>
-  );
-}
-
-export default function game() {
-  return (
-    <DBProvider>
-      <GameSetup />
-    </DBProvider>
   );
 }
