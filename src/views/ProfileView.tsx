@@ -70,7 +70,7 @@ export default function App() {
 
         
         <Card>
-            <Link href="/"> 
+            <Link href="/settings"> 
                 <View style={styles.rowContainer}>
                     <Image source={require('@/assets/images/settings-icon.png')} style={styles.category} />
                     
