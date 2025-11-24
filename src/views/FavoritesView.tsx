@@ -26,15 +26,20 @@ type Game = {
 
 export default function App() {
     
-    const { setGameLikedStatus, getAllGames } = useFetchers();
+    const { setGameLikedStatus, getLikedGames } = useFetchers();
     const [games, setGames] = useState<Game[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function load() {
-            const liked = await getAllGames();
-            
-            setGames(liked.slice(0, 5) as Game[]); // 5 premiers jeux
+            const liked = await getLikedGames();
+
+            setGameLikedStatus(2246340, true); //Monster hHunter Wilds
+            setGameLikedStatus(1245620, true); //Elden Ring
+            setGameLikedStatus(374320, true); //Dark Souls III
+            setGameLikedStatus(319510, true); //Five Nights at Freddy's
+            setGameLikedStatus(1966720, true); //Lethal Company
+            setGames(liked as Game[]);
             setLoading(false);
         }
     load();
@@ -60,7 +65,7 @@ export default function App() {
     if (games.length === 0) {
         return (
             <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.title}>Start liking games!</Text>
+                <Text style={styles.title}>Start liking games !</Text>
                 <Text style={{ textAlign: 'center', marginBottom: 20 }}>You have no favorites.</Text>
                 <Link href="/" asChild>
                     <TouchableOpacity style={styles.discoverButton}>
