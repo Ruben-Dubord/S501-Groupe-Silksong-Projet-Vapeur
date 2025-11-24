@@ -1,87 +1,66 @@
-import { StyleSheet, Text, Image, View, TouchableOpacity, FlatList, Alert, Dimensions } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Card from '@/components/Card';
-import { Link } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from "react";
+import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity, Alert, Dimensions } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Link } from "expo-router";
+import Card from "../components/Card";
+import { getGameImage, useFetchers } from "@/app/database";
 
 // ---- Responsive Layout ----
 const screenWidth = Dimensions.get("window").width;
 const numColumns = 3;
 const ITEM_MARGIN = 6;
-
-// Largeur exacte d’un item pour qu’il n’y ait jamais de chevauchement
 const ITEM_WIDTH = (screenWidth - ITEM_MARGIN * (numColumns * 2)) / numColumns;
 
-export default function App() {
+type Game = {
+  AppID: number;
+  Name: string;
+  RequiredAge: number;
+  Price: number;
+  Description: string;
+  HeaderImage: any;
+  Developers: string;
+  Publishers: string;
+  Tags: string;
+  Liked: boolean;
+};
 
-    const [gameList, setGameList] = useState([
-        { id: 1, name: "Hollow Knight", image: require("../assets/images/GameImages/10.jpg"), liked: true },
-        { id: 2, name: "Monster Hunter Stories 2: Wings of Ruin", image: require("../assets/images/GameImages/10.jpg"), liked: true },
-        { id: 3, name: "Dark Souls Remastered", image: require("../assets/images/GameImages/10.jpg"), liked: true },
-        { id: 4, name: "The Legend of Zelda: Tears of the Kingdom", image: require("../assets/images/GameImages/10.jpg"), liked: true },
-        { id: 5, name: "Elden Ring", image: require("../assets/images/GameImages/10.jpg"), liked: true }
-    ]);
+export default function App() {
+    
+    const { setGameLikedStatus, getAllGames } = useFetchers();
+    const [games, setGames] = useState<Game[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function load() {
+            const liked = await getAllGames();
+            
+            setGames(liked.slice(0, 5) as Game[]); // 5 premiers jeux
+            setLoading(false);
+        }
+    load();
+    }, []);
 
     const handleUnlike = (id: number) => {
-        Alert.alert(
-            "Confirm Deletion",
-            "Are you sure you want to remove this game from your favorites?",
-            [
-                { text: "Cancel", style: "cancel" },
-                {
-                    text: "OK",
-                    onPress: () => {
-                        setGameList(prev => prev.filter(game => game.id !== id));
-                    },
-                },
-            ]
-        );
+        Alert.alert("Confirm Deletion", "Are you sure you want to remove this game from your favorites?",
+            [{ text: "Cancel", style: "cancel" },{text: "OK", onPress: async () => {
+                await setGameLikedStatus(id, false);
+                setGames(prev => prev.filter(g => g.AppID !== id));
+            }
+            }]);
     };
 
-    const renderItem = ({ item }: { item: typeof gameList[0] }) => (
-        <View style={styles.item}>
-            <Card>
+    if (loading) {
+        return (
+            <SafeAreaView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <Text style={styles.title}>Loading favorites…</Text>
+            </SafeAreaView>
+        );
+    }
 
-                <Link
-                    href={{
-                        pathname: '/games/[id]',
-                        params: { id: item.id, name: item.name },
-                    }}
-                    asChild
-                >
-                    <TouchableOpacity>
-
-                        {/* TITRE LIMITÉ À 2 LIGNES */}
-                        <Text
-                            style={styles.titre}
-                            numberOfLines={2}
-                            ellipsizeMode="tail"
-                        >
-                            {item.name}
-                        </Text>
-
-                        <View style={styles.imageContainer}>
-                            <Image style={styles.image} source={item.image} />
-                        </View>
-
-                    </TouchableOpacity>
-                </Link>
-
-                <TouchableOpacity
-                    style={styles.unlikeButton}
-                    onPress={() => handleUnlike(item.id)}
-                >
-                    <Text style={styles.unlikeButtonText}>Unlike</Text>
-                </TouchableOpacity>
-
-            </Card>
-        </View>
-    );
-
-    if (gameList.length === 0) {
+    if (games.length === 0) {
         return (
             <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.title}>Start liking games !</Text>
+                <Text style={styles.title}>Start liking games!</Text>
                 <Text style={{ textAlign: 'center', marginBottom: 20 }}>You have no favorites.</Text>
                 <Link href="/" asChild>
                     <TouchableOpacity style={styles.discoverButton}>
@@ -92,23 +71,51 @@ export default function App() {
         );
     }
 
-    return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <Text style={styles.title}>Here are your favorite games !</Text>
+    const renderItem = ({item}: {item: Game}) => (
+        <View style={styles.item}>
+            <Card>
+                <Link
+                    href={{pathname: '/games/[id]', params: {
+                        id: item.AppID,
+                        name: item.Name,
+                        requiredAge: item.RequiredAge,
+                        price: item.Price,
+                        description: item.Description,
+                        developers: item.Developers,
+                        publishers: item.Publishers,
+                        tags: item.Tags
+                    }
+                    }} asChild>
+                    <TouchableOpacity>
+                        <Text style={styles.titre} numberOfLines={2} ellipsizeMode="tail">{item.Name}</Text>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.image} source={getGameImage(item.AppID)} />
+                        </View>
+                    </TouchableOpacity>
+                </Link>
 
-            <FlatList
-                style={styles.container}
-                keyExtractor={(game) => game.id.toString()}
-                data={gameList}
-                renderItem={renderItem}
-                numColumns={numColumns}
-            />
-        </SafeAreaView>
+                <TouchableOpacity style={styles.unlikeButton} onPress={() => handleUnlike(item.AppID)}>
+                    <Text style={styles.unlikeButtonText}>Unlike</Text>
+                </TouchableOpacity>
+            </Card>
+        </View>
+    );
+
+    return (
+    <SafeAreaView style={{ flex: 1 }}>
+        <Text style={styles.title}>Here are your favorite games!</Text>
+        <FlatList
+            style={styles.container}
+            keyExtractor={(game) => game.AppID.toString()}
+            data={games}
+            renderItem={renderItem}
+            numColumns={numColumns}
+        />
+    </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-
     title: {
         fontSize: 24,
         fontWeight: '600',
@@ -116,12 +123,10 @@ const styles = StyleSheet.create({
         marginTop: 20,
         textAlign: 'center',
     },
-
     container: {
         flex: 1,
         paddingTop: 10,
     },
-
     discoverButton: {
         marginTop: 20,
         padding: 12,
@@ -130,22 +135,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginHorizontal: 20,
     },
-
     discoverButtonText: {
         color: 'white',
         fontSize: 16,
         fontWeight: '600',
     },
-
-    // ---- Responsive Grid ----
     item: {
         width: ITEM_WIDTH,
         margin: ITEM_MARGIN,
     },
-
     imageContainer: {
         width: ITEM_WIDTH - 20,
-        height: ITEM_WIDTH - 20, // carré responsive
+        height: ITEM_WIDTH - 20,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
@@ -153,22 +154,18 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 6,
     },
-
     image: {
         width: '100%',
         height: '100%',
         resizeMode: 'cover',
     },
-
-    // ---- TITRE LIMITÉ À 2 LIGNES ----
     titre: {
         fontSize: 16,
         fontWeight: '500',
         marginVertical: 5,
         textAlign: 'center',
-        height: 40,     // fixe pour que toutes les Cards aient la même hauteur 💡
+        height: 40,
     },
-
     unlikeButton: {
         marginTop: 10,
         padding: 10,
@@ -177,7 +174,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
     },
-
     unlikeButtonText: {
         color: 'white',
         fontSize: 16,
