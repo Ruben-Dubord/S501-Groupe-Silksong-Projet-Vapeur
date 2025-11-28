@@ -1,5 +1,10 @@
 import FavoritesView from '@/views/FavoritesView';
+import DBProvider from './database';
 
 export default function Index() {
-  return <FavoritesView />;
+  return (
+    <DBProvider>
+      <FavoritesView />
+    </DBProvider>
+  );
 }

@@ -2,15 +2,14 @@ import { Link } from "expo-router";
 import { Text, View ,Image, FlatList, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Card from "../../components/Card";
-import { DBProvider, useFetchers, getGameImage } from "../database";
+import DBProvider, { useFetchers, getGameImage } from "../database";
 import { useEffect, useState } from "react";
-import game from "../games/[id]";
 
 const styles= StyleSheet.create({
   titre: { fontSize: 20, fontWeight: "bold", margin: 10 },
   container: { padding: 2 },
   item: {flex:1, alignContent:'center', alignItems:'center'},
-  image: { width:220,height:100}
+  image: { width:220,height:100 }
 });
 
 function IndexSetup() {
@@ -21,41 +20,23 @@ function IndexSetup() {
     RequiredAge: number;
     Price: number;
     Description: string;
-    HeaderImage: any;
+    HeaderImage: string;
     Developers: string;
     Publishers: string;
     Tags: string;
     Liked: boolean;
   };
 
-  const { getAllGames, getUnlikedGames, getLikedGames } = useFetchers();
+  const { getUnlikedGames } = useFetchers();
   const [games, setGames] = useState<game[]>([]);
 
   useEffect(() => {
-      async function load() {
-        const data = await getLikedGames();
-        setGames(data as game[]);
-      }
-      load();
-    }, []);
-
-  if (games.length === 0) {
-    useEffect(() => {
-      async function load() {
-        const data = await getAllGames();
-        setGames(data as game[]);
-      }
-      load();
-    }, []);
-  } else {
-    useEffect(() => {
-      async function load() {
-        const data = await getUnlikedGames();
-        setGames(data as game[]);
-      }
-      load();
-    }, []);
-  }
+    async function load() {
+      const data = await getUnlikedGames();
+      setGames(data as game[]);
+    }
+    load();
+  }, []);
 
   const numColumns = 2;
 

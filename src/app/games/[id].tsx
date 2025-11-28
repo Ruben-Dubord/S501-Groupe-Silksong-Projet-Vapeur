@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import { Text, Image, ScrollView } from "react-native";
+import { Text, Image, ScrollView, View, Button } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getGameImage } from "../database";
 
@@ -9,17 +9,61 @@ export default function game() {
 
   return (
     <SafeAreaView>
-      <ScrollView>
-        <Image source={getGameImage(Number(params.id))} />
-        <Text>ID Steam : {params.id}</Text>
-        <Text>Nom du jeu : {params.name}</Text>
-        <Text>Age requis : {params.requiredAge}</Text>
-        <Text>Prix : {params.price} $</Text>
-        <Text>Description : {params.description}</Text>
-        <Text>Développeurs : {params.developers}</Text>
-        <Text>Éditeurs : {params.publishers}</Text>
-        <Text>Tags : {params.tags}</Text>
+      <ScrollView contentContainerStyle={{ alignItems: "center", padding: 10, paddingBottom: 60 }}>
+        <Text style={{ fontWeight: "bold", fontSize: 24 }}>
+          Nom du jeu : {params.name}
+        </Text>
+
+        <Text style={{ fontWeight: "bold" }}>
+          ID Steam : {params.id}
+        </Text>
+
+        <Image
+          source={getGameImage(Number(params.id))}
+          style={{ width: "95%" }}
+          resizeMode="contain"
+        />
+
+        <Text style={{ textAlign: "center", fontSize: 16 }}>
+          <Text style={{ fontWeight: "bold" }}>Age requis : </Text>
+          {params.requiredAge}
+        </Text>
+
+        <Text style={{ textAlign: "center", fontSize: 16 }}>
+          <Text style={{ fontWeight: "bold" }}>Prix : </Text>
+          {params.price} $
+        </Text>
+
+        <Text style={{ textAlign: "center", fontSize: 16 }}>
+          <Text style={{ fontWeight: "bold" }}>Description : {"\n"}</Text>
+          <Text style={{ margin: 10 }}>{params.description}</Text>
+        </Text>
+
+        <Text style={{ textAlign: "center", fontSize: 16 }}>
+          <Text style={{ fontWeight: "bold" }}>Développeurs : </Text>
+          {params.developers}
+        </Text>
+
+        <Text style={{ textAlign: "center", fontSize: 16 }}>
+          <Text style={{ fontWeight: "bold" }}>Éditeurs : </Text>
+          {params.publishers}
+        </Text>
+
+        <Text style={{ textAlign: "center", fontSize: 16 }}>
+          <Text style={{ fontWeight: "bold" }}>Tags : </Text>
+          {"\n"}{params.tags.toString().replaceAll(",", ", ")}
+        </Text>
       </ScrollView>
+     <View
+        style={{
+          position: "absolute",
+          bottom: 40,
+          left: 0,
+          right: 0,
+          alignItems: "center",
+        }}
+      >
+      </View>
     </SafeAreaView>
   );
-}
+} 
