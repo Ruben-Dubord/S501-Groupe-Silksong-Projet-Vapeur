@@ -1,7 +1,7 @@
 import { SQLiteProvider, useSQLiteContext } from "expo-sqlite";
 import { gameImages } from "../assets/images/GameImages";
 
-export const DBProvider = ({children}: any) => {
+export default function DBProvider({children}: any) {
   return (
     <SQLiteProvider databaseName="vapeur-1-1.db" assetSource={{ assetId: require("../database/vapeur.db") }}>
       {children}
@@ -26,17 +26,21 @@ export function useFetchers() {
   };
 
   const getUnlikedGames = async () => {
-    const games = await db.getAllAsync("SELECT * FROM games WHERE Liked = 0;");
+    const games = await db.getAllAsync("SELECT * FROM games WHERE Liked = 0 ORDER BY Name;");
     return games;
   };
 
   const getLikedGames = async () => {
-    const games = await db.getAllAsync("SELECT * FROM games WHERE Liked = 1;");
+    const games = await db.getAllAsync("SELECT * FROM games WHERE Liked = 1 ORDER BY Name;");
     return games;
   };
 
   const setGameLikedStatus = async (id: number, liked: boolean) => {
-    await db.runAsync("UPDATE games SET Liked = ? WHERE AppID = ?;", [liked ? 1 : 0, id]);
+    if (liked) {
+      await db.runAsync("UPDATE games SET Liked = 1 WHERE AppID = ?;", [id]);
+    } else {
+      await db.runAsync("UPDATE games SET Liked = 0 WHERE AppID = ?;", [id]);
+    }
   }
 
   return {

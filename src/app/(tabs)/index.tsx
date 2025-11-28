@@ -1,6 +1,6 @@
 import { Link } from "expo-router";
 import { Text, View ,Image, FlatList, StyleSheet, Pressable } from "react-native";
-import { DBProvider, useFetchers, getGameImage } from "@/app/database";
+import { useFetchers, getGameImage } from "@/app/database";
 import React, { useEffect, useState } from "react";
 import { colors,fonts,fontSize,spacing ,radius} from "@/themes/themes";
 import Like from "@/components/Like";
@@ -22,41 +22,23 @@ function IndexSetup() {
     RequiredAge: number;
     Price: number;
     Description: string;
-    HeaderImage: any;
+    HeaderImage: string;
     Developers: string;
     Publishers: string;
     Tags: string;
     Liked: boolean;
   };
 
-  const { getAllGames, getUnlikedGames, getLikedGames } = useFetchers();
+  const { getUnlikedGames } = useFetchers();
   const [games, setGames] = useState<game[]>([]);
 
   useEffect(() => {
-      async function load() {
-        const data = await getLikedGames();
-        setGames(data as game[]);
-      }
-      load();
-    }, []);
-
-  if (games.length === 0) {
-    useEffect(() => {
-      async function load() {
-        const data = await getAllGames();
-        setGames(data as game[]);
-      }
-      load();
-    }, []);
-  } else {
-    useEffect(() => {
-      async function load() {
-        const data = await getUnlikedGames();
-        setGames(data as game[]);
-      }
-      load();
-    }, []);
-  }
+    async function load() {
+      const data = await getUnlikedGames();
+      setGames(data as game[]);
+    }
+    load();
+  }, []);
 
 /* remove liked game from list when liked */
   function removeLiked() {
