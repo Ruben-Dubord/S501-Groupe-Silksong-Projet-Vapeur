@@ -1,7 +1,7 @@
 import FavoritesView from '@/views/FavoritesView';
-import DBProvider from './database';
+import { DBProvider } from "@/app/database";
 
-export default function Index() {
+export default function Favorites() {
   return (
     <DBProvider>
       <FavoritesView />
