@@ -1,15 +1,15 @@
 import { Link } from "expo-router";
-import { Text, View ,Image, FlatList, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Text, View ,Image, FlatList, StyleSheet, Pressable } from "react-native";
 import Card from "../../components/Card";
 import { DBProvider, useFetchers, getGameImage } from "../database";
 import { useEffect, useState } from "react";
 import { colors,fonts,fontSize,spacing ,radius} from "@/themes/themes";
+import Like from "@/components/Like";
 
 const styles= StyleSheet.create({
-  titre: { fontSize: fontSize.large, fontFamily: fonts.bold, margin: 10 },
+  titre: { color:'white',fontSize: fontSize.large, fontFamily: fonts.bold},
   container: {   backgroundColor: colors.background,width:'100%'},
-  item: {flex:2,fontFamily:fonts.regular,margin:5},
+  item: {flex:2,fontFamily:fonts.regular,margin:spacing.medium},
   image: { width:'100%',resizeMode:'contain',borderRadius:8  },
 });
 
@@ -57,6 +57,14 @@ function IndexSetup() {
     }, []);
   }
 
+/* remove liked game from list when liked */
+  function removeLiked() {
+    async function refreshLikedGames() {
+      const data = await getUnlikedGames();
+      setGames(data as game[]);
+    }
+    refreshLikedGames();}
+
   const numColumns = 1;
 
   // Render chaque jeu(item) dans la FlatList en card
@@ -90,6 +98,7 @@ function IndexSetup() {
               flexWrap: "wrap",
             }}
           >
+            {/*tags peut être le mettre en composant*/}
             {(() => {
               const tags = (item.Tags || "")
                 .split(",")
@@ -115,6 +124,11 @@ function IndexSetup() {
                 </Text>
               ));
             })()}
+
+            <Pressable onPress={removeLiked}>
+              <Like id={item.AppID} />  
+            </Pressable>
+           
           </View>
         </Link>
       </Card>

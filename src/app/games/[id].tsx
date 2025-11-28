@@ -1,14 +1,21 @@
-import { useLocalSearchParams } from "expo-router";
-import { Text, Image, ScrollView } from "react-native";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { Text, Image, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getGameImage } from "../database";
 
 export default function game() {
 
   const params = useLocalSearchParams();
+  const router = useRouter();
 
   return (
-    <SafeAreaView>
+    <View>
+      <Stack.Screen
+        options={{
+          title: params.name as string,
+        }}
+      />
+
       <ScrollView>
         <Image source={getGameImage(Number(params.id))} />
         <Text>ID Steam : {params.id}</Text>
@@ -20,6 +27,6 @@ export default function game() {
         <Text>Éditeurs : {params.publishers}</Text>
         <Text>Tags : {params.tags}</Text>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

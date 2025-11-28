@@ -19,8 +19,11 @@ export default function TabLayout() {
         },
       })}
     >
-      <Tabs.Screen name="index" options={{ title: "Accueil" }} />
-      <Tabs.Screen name="profile" options={{ title: "Profil" }} />
+      <Tabs.Screen
+        name="index"
+        options={{ title: "Home", headerShown: true }}
+      />
+      <Tabs.Screen name="profile" options={{ title: "Profil",headerShown: true, }} />
     </Tabs>
   );
 }
