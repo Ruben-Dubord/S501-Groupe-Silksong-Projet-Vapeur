@@ -5,10 +5,15 @@ import { getGameImage } from "@/app/database";
 export default function game() {
 
   const params = useLocalSearchParams();
-  const router = useRouter();
 
   return (
-    <SafeAreaView>
+    
+    <View>
+      <Stack.Screen
+        options={{
+          title: params.name as string,
+        }}
+      />
       <ScrollView contentContainerStyle={{ alignItems: "center", padding: 10, paddingBottom: 60 }}>
         <Text style={{ fontWeight: "bold", fontSize: 24 }}>
           Nom du jeu : {params.name}
@@ -64,6 +69,6 @@ export default function game() {
         }}
       >
       </View>
-    </SafeAreaView>
+    </View>
   );
 } 
