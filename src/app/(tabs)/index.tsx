@@ -1,10 +1,11 @@
 import { Link } from "expo-router";
 import { Text, View ,Image, FlatList, StyleSheet, Pressable } from "react-native";
-import Card from "../../components/Card";
-import DBProvider, { useFetchers, getGameImage } from "../database";
-import { useEffect, useState } from "react";
+import { useFetchers, getGameImage } from "@/app/database";
+import React, { useEffect, useState } from "react";
 import { colors,fonts,fontSize,spacing ,radius} from "@/themes/themes";
 import Like from "@/components/Like";
+import Card from "@/components/Card";
+import Tags from "@/components/Tags";
 
 const styles= StyleSheet.create({
   titre: { color:'white',fontSize: fontSize.large, fontFamily: fonts.bold},
@@ -80,37 +81,18 @@ function IndexSetup() {
               flexWrap: "wrap",
             }}
           >
-            {/*tags peut être le mettre en composant*/}
-            {(() => {
-              const tags = (item.Tags || "")
-                .split(",")
-                .map((t) => t.trim())
-                .filter(Boolean);
-              return tags.map((tag, i) => (
-                <Text
-                  key={i}
-                  style={{
-                    backgroundColor: colors.tagActiveBackground,
-                    color: colors.tagActiveText,
-                    paddingHorizontal: spacing.small,
-                    paddingVertical: spacing.extrasmall,
-                    borderRadius: radius.small,
-                    marginRight: spacing.small,
-                    marginBottom: spacing.small,
-                    fontFamily: fonts.regular,
-                    fontSize: fontSize.small,
-                  }}
-                >
-                  {tag}
-                  {i < tags.length - 1 ? " " : ""}
-                </Text>
-              ));
-            })()}
+            <Tags
+              tags={item.Tags}
+              colors={colors}
+              spacing={spacing}
+              radius={radius}
+              fonts={fonts}
+              fontSize={fontSize}
+            />
 
             <Pressable onPress={removeLiked}>
-              <Like id={item.AppID} />  
+              <Like id={item.AppID} />
             </Pressable>
-           
           </View>
         </Link>
       </Card>

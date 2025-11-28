@@ -1,7 +1,6 @@
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { Text, Image, ScrollView, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { getGameImage } from "../database";
+import { getGameImage } from "@/app/database";
 
 export default function game() {
 
