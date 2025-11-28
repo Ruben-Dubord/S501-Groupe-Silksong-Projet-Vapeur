@@ -1,5 +1,6 @@
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { colors} from "@/themes/themes";
 
 export default function Card(props: {children: React.ReactNode}) {
     
@@ -14,7 +15,7 @@ export default function Card(props: {children: React.ReactNode}) {
 
 const StyleSheet = {
     card: {
-        backgroundColor: 'white',
+        backgroundColor: colors.border,
         borderRadius: 8,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
