@@ -41,12 +41,25 @@ export function useFetchers() {
     } else {
       await db.runAsync("UPDATE games SET Liked = 0 WHERE AppID = ?;", [id]);
     }
-  }
+  };
+
+  const getNumberOfLikedGames = async () => {
+    const rows = await db.getAllAsync(
+      "SELECT COUNT(*) AS count FROM games WHERE Liked = 1;"
+    ) as { count: number }[];
+
+    return rows[0].count;
+  };
+
+
+
+
 
   return {
     getAllGames,
     getUnlikedGames,
     getLikedGames,
-    setGameLikedStatus
+    setGameLikedStatus,
+    getNumberOfLikedGames
   };
 }
