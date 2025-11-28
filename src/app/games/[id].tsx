@@ -8,24 +8,15 @@ export default function game() {
   const router = useRouter();
 
   return (
-    <View>
-      <Stack.Screen
-        options={{
-          title: params.name as string,
-        }}
-      />
-      <ScrollView
-        contentContainerStyle={{
-          alignItems: "center",
-          padding: 10,
-          paddingBottom: 60,
-        }}
-      >
+    <SafeAreaView>
+      <ScrollView contentContainerStyle={{ alignItems: "center", padding: 10, paddingBottom: 60 }}>
         <Text style={{ fontWeight: "bold", fontSize: 24 }}>
           Nom du jeu : {params.name}
         </Text>
 
-        <Text style={{ fontWeight: "bold" }}>ID Steam : {params.id}</Text>
+        <Text style={{ fontWeight: "bold" }}>
+          ID Steam : {params.id}
+        </Text>
 
         <Image
           source={getGameImage(Number(params.id))}
@@ -60,11 +51,10 @@ export default function game() {
 
         <Text style={{ textAlign: "center", fontSize: 16 }}>
           <Text style={{ fontWeight: "bold" }}>Tags : </Text>
-          {"\n"}
-          {params.tags.toString().replaceAll(",", ", ")}
+          {"\n"}{params.tags.toString().replaceAll(",", ", ")}
         </Text>
       </ScrollView>
-      <View
+     <View
         style={{
           position: "absolute",
           bottom: 40,
@@ -72,7 +62,8 @@ export default function game() {
           right: 0,
           alignItems: "center",
         }}
-      ></View>
-    </View>
+      >
+      </View>
+    </SafeAreaView>
   );
 } 
