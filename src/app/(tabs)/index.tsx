@@ -1,6 +1,6 @@
 import { Link } from "expo-router";
 import { Text, View ,Image, FlatList, StyleSheet, Pressable } from "react-native";
-import { useFetchers, getGameImage } from "@/app/database";
+import DBProvider, { useFetchers, getGameImage } from "@/app/database";
 import React, { useEffect, useState } from "react";
 import { colors,fonts,fontSize,spacing ,radius} from "@/themes/themes";
 import Like from "@/components/Like";
