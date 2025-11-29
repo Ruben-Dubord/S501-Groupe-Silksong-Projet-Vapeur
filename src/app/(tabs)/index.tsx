@@ -1,4 +1,4 @@
-import { Link } from "expo-router";
+import { router } from "expo-router";
 import { Text, View ,Image, FlatList, StyleSheet, Pressable } from "react-native";
 import DBProvider, { useFetchers, getGameImage } from "@/app/database";
 import React, { useEffect, useState } from "react";
@@ -56,29 +56,31 @@ function IndexSetup() {
       <Card>
         <Image style={styles.image} source={getGameImage(item.AppID)} />
         <Text style={styles.titre}>{item.Name} </Text>
-        <Link
-          href={{
-            pathname: "/games/[id]",
-            params: {
-              id: item.AppID,
-              name: item.Name,
-              requiredAge: item.RequiredAge,
-              price: item.Price,
-              description: item.Description,
-              developers: item.Developers,
-              publishers: item.Publishers,
-              tags: item.Tags,
-            },
+        <Pressable
+          onPress={() => {
+            router.push({
+              pathname: "/games/[id]",
+              params: {
+                id: item.AppID,
+                name: item.Name,
+                requiredAge: item.RequiredAge,
+                price: item.Price,
+                description: item.Description,
+                developers: item.Developers,
+                publishers: item.Publishers,
+                tags: item.Tags,
+              },
+            });
           }}
         >
           <Tags tags={item.Tags} />
           <Pressable
             onPress={removeLiked}
-            style={{ marginBottom: 10, flex: 1 }}
+            style={{ marginBottom:spacing.extrasmall, flex: 1 }}
           >
             <Like id={item.AppID} />
           </Pressable>
-        </Link>
+        </Pressable>
       </Card>
     </View>
   );
