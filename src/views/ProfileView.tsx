@@ -13,15 +13,21 @@ export default function App() {
       { id: 3, name: "Dark Souls", date: "2025-11-12 14:54:12"}
   ];
 
-  const {getNumberOfLikedGames, setGameLikedStatus } = useFetchers();
+  const {getNumberOfLikedGames} = useFetchers();
   const [likedCount, setLikedCount] = useState<number>(0);
   
+  // Rafraîchit le compteur toutes les 3 secondes mais ne re-render que si la valeur change
   useEffect(() => {
-    async function load() {
-      const liked = await getNumberOfLikedGames();
-      setLikedCount(liked);
-    }
-    load();
+    const interval = setInterval(async () => {
+      try {
+        const liked = await getNumberOfLikedGames();
+        setLikedCount(prev => (prev !== liked ? liked : prev));
+      } catch (e) {
+        console.error("Erreur lors du rafraîchissement du compteur :", e);
+      }
+    }, 200);
+
+    return () => clearInterval(interval);
   }, []);
 
     // Function to calculate time since a given date
