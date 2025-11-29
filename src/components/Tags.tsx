@@ -1,4 +1,4 @@
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 import { colors,spacing,radius,fontSize,fonts } from "@/themes/themes";
 
 const defaultColors = {
@@ -62,17 +62,28 @@ export const Tags: React.FC<TagsProps> = ({
   if (tagArray.length === 0) return null;
 
   return (
-    <>
+    <View
+      style={{
+        marginHorizontal:0,
+        marginBottom: spacing.small,
+        flexDirection: "row",
+        alignItems: "center",
+        flexWrap: "wrap",
+        width: "100%",
+      }}
+    >
       {tagArray.map((tag, i) => (
         <Text
           key={`${tag}-${i}`}
           style={{
+            includeFontPadding: false,
+            textAlignVertical: "center",
             backgroundColor: colors.tagActiveBackground,
             color: colors.tagActiveText,
             paddingHorizontal: spacing.small,
-            paddingVertical: spacing.extrasmall,
+            paddingVertical: spacing.small,
             borderRadius: radius.small,
-            margin: spacing.extrasmall/2,
+            margin: spacing.extrasmall,
             fontFamily: fonts.regular,
             fontSize: fontSize.small,
           }}
@@ -80,7 +91,7 @@ export const Tags: React.FC<TagsProps> = ({
           {tag}
         </Text>
       ))}
-    </>
+    </View>
   );
 };
 export default Tags;
