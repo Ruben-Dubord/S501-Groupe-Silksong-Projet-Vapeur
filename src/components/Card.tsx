@@ -1,15 +1,14 @@
 import { View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { colors} from "@/themes/themes";
 
 export default function Card(props: {children: React.ReactNode}) {
     
     return (
-    <SafeAreaView style={StyleSheet.card}>        
+    <View style={StyleSheet.card}>        
             <View style={StyleSheet.cardContent}>
                     {props.children}
             </View>
-    </SafeAreaView>
+    </View>
     )
     }
 

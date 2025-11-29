@@ -2,16 +2,16 @@ import { Link } from "expo-router";
 import { Text, View ,Image, FlatList, StyleSheet, Pressable } from "react-native";
 import DBProvider, { useFetchers, getGameImage } from "@/app/database";
 import React, { useEffect, useState } from "react";
-import { colors,fonts,fontSize,spacing ,radius} from "@/themes/themes";
+import { colors,fonts,fontSize,spacing } from "@/themes/themes";
 import Like from "@/components/Like";
 import Card from "@/components/Card";
 import Tags from "@/components/Tags";
 
 const styles= StyleSheet.create({
-  titre: { color:'white',fontSize: fontSize.large, fontFamily: fonts.bold},
+  titre: { color:'white',fontSize: fontSize.large, fontFamily: fonts.bold, flexWrap:'nowrap', marginVertical: spacing.small},
   container: {   backgroundColor: colors.background,width:'100%'},
-  item: {flex:2,fontFamily:fonts.regular,margin:spacing.medium},
-  image: { width:'100%',resizeMode:'contain',borderRadius:8  },
+  item: {fontFamily:fonts.regular,margin:spacing.medium},
+  image: { width:'100%',resizeMode:'contain'},
 });
 
 function IndexSetup() {
@@ -50,10 +50,12 @@ function IndexSetup() {
 
   const numColumns = 1;
 
-  // Render chaque jeu(item) dans la FlatList en card
+  /* render item(game) for FlatList */
   const renderItem = ({ item }: { item: game }) => (
     <View style={styles.item}>
       <Card>
+        <Image style={styles.image} source={getGameImage(item.AppID)} />
+        <Text style={styles.titre}>{item.Name} </Text>
         <Link
           href={{
             pathname: "/games/[id]",
@@ -69,31 +71,13 @@ function IndexSetup() {
             },
           }}
         >
-          <Image style={styles.image} source={getGameImage(item.AppID)} />
-
-          <Text style={styles.titre}>{item.Name} </Text>
-
-          <View
-            style={{
-              marginHorizontal: 10,
-              marginBottom: spacing.small,
-              flexDirection: "row",
-              flexWrap: "wrap",
-            }}
+          <Tags tags={item.Tags} />
+          <Pressable
+            onPress={removeLiked}
+            style={{ marginBottom: 10, flex: 1 }}
           >
-            <Tags
-              tags={item.Tags}
-              colors={colors}
-              spacing={spacing}
-              radius={radius}
-              fonts={fonts}
-              fontSize={fontSize}
-            />
-
-            <Pressable onPress={removeLiked}>
-              <Like id={item.AppID} />
-            </Pressable>
-          </View>
+            <Like id={item.AppID} />
+          </Pressable>
         </Link>
       </Card>
     </View>
