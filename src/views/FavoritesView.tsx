@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Link } from "expo-router";
 import Card from "../components/Card";
 import { getGameImage, useFetchers } from "@/app/database";
+import { Stack} from "expo-router";
 
 // ---- Responsive Layout ----
 const screenWidth = Dimensions.get("window").width;
@@ -92,6 +93,8 @@ export default function App() {
 
     return (
     <SafeAreaView style={{ flex: 1 }}>
+        <Stack.Screen options={{title: "Your Favorites"}}
+      />
         <Text style={styles.title}>Here are your favorite games!</Text>
         <FlatList
             style={styles.container}

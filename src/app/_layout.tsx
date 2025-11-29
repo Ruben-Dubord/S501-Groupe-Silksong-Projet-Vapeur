@@ -28,6 +28,7 @@ export default function RootLayout() {
           headerTitleStyle: { color: colors.textPrimary },
         }}
       />
+      <Stack.Screen name="favorites" options={{headerShown:true}}/>
     </Stack>
   );
 }
