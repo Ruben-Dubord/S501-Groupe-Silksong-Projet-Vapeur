@@ -25,7 +25,7 @@ export default function App() {
       } catch (e) {
         console.error("Erreur lors du rafraîchissement du compteur :", e);
       }
-    }, 200);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, []);
