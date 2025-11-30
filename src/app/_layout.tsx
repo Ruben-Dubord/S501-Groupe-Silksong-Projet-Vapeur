@@ -28,7 +28,15 @@ export default function RootLayout() {
           headerTitleStyle: { color: colors.textPrimary },
         }}
       />
-      <Stack.Screen name="favorites" options={{headerShown:true}}/>
+      <Stack.Screen name="favorites" options={{
+          headerTintColor: colors.accent,
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: colors.background,
+          },
+          headerTitleStyle: { color: colors.textPrimary },
+
+      }}/>
     </Stack>
   );
 }
