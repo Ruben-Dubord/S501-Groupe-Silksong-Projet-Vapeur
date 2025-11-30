@@ -1,4 +1,4 @@
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { Stack, useLocalSearchParams} from "expo-router";
 import { Text, Image, ScrollView, View } from "react-native";
 import { getGameImage } from "@/app/database";
 

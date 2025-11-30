@@ -13,7 +13,7 @@ export default function Like(props: {id: number}) {
     return (
         <>
             <Button
-            title="like placeholder"
+            title="like"
             onPress={onPressLike}
             />
         </>
