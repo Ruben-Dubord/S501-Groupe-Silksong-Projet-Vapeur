@@ -4,6 +4,7 @@ import Card from '@/components/Card';
 import { Link } from 'expo-router';
 import { useFetchers } from "@/app/database";
 import { useEffect, useState} from 'react';
+import { colors, spacing } from '@/themes/themes';
 
 export default function App() {
 
@@ -56,8 +57,7 @@ export default function App() {
 
 
   return (
-    <ScrollView>
-    <SafeAreaView>
+    <ScrollView style={{ flex: 1, backgroundColor: colors.background, padding: spacing.large }}>
         <Text style={styles.title}>Welcome to your profile !</Text>
         
         <Card>
@@ -67,7 +67,7 @@ export default function App() {
                     
                     <View style= {styles.textColumn}>
                         <Text style={styles.categoryTitle}>Your favorite games</Text>
-                        <Text>{likedCount} games liked</Text>
+                        <Text style={styles.recentFavoriteDate}>{likedCount} games liked</Text>
                     </View>
                 </View>
             </Link>
@@ -81,7 +81,7 @@ export default function App() {
                     
                     <View style= {styles.textColumn}>
                         <Text style={styles.categoryTitle}>Your settings</Text>
-                        <Text>App preferences</Text>
+                        <Text style={styles.recentFavoriteDate}>App preferences</Text>
                     </View>
                 </View>
             </Link>
@@ -103,13 +103,14 @@ export default function App() {
         ))}
         </Card>
 
-    </SafeAreaView>
+
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   title: {
+    color:colors.textPrimary,
     fontSize: 24,
     fontWeight: '600',
     marginBottom: 20,
@@ -135,6 +136,7 @@ const styles = StyleSheet.create({
   },
 
   categoryTitle: {
+    color: colors.textPrimary,
     fontWeight: '600',
     marginBottom: 4,
     fontSize: 18
@@ -159,10 +161,11 @@ const styles = StyleSheet.create({
   },
 
   recentFavoriteName: {
+    color: colors.textPrimary,
     fontSize: 16,
   },
 
   recentFavoriteDate: {
-    color: 'gray',
+    color: 'lightgray',
   }
 }); 

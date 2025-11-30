@@ -5,6 +5,7 @@ import { Link } from "expo-router";
 import Card from "../components/Card";
 import { getGameImage, useFetchers } from "@/app/database";
 import { Stack} from "expo-router";
+import { colors } from "@/themes/themes";
 
 // ---- Responsive Layout ----
 const screenWidth = Dimensions.get("window").width;
@@ -49,15 +50,15 @@ export default function App() {
 
     if (games.length === 0) {
         return (
-            <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={styles.title}>Start liking games !</Text>
-                <Text style={{ textAlign: 'center', marginBottom: 20 }}>You have no favorites.</Text>
+                <Text style={{ textAlign: 'center', marginBottom: 20,color:colors.textPrimary }}>You have no favorites.</Text>
                 <Link href="/" asChild>
                     <TouchableOpacity style={styles.discoverButton}>
                         <Text style={styles.discoverButtonText}>Back to Home</Text>
                     </TouchableOpacity>
                 </Link>
-            </SafeAreaView>
+            </View>
         );
     }
 
@@ -92,7 +93,7 @@ export default function App() {
     );
 
     return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 ,backgroundColor: colors.background}}>
         <Stack.Screen options={{title: "Your Favorites"}}
       />
         <Text style={styles.title}>Here are your favorite games!</Text>
@@ -109,6 +110,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
     title: {
+        color: colors.textPrimary,
         fontSize: 24,
         fontWeight: '600',
         marginBottom: 20,
@@ -116,6 +118,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     container: {
+        backgroundColor: colors.background,
         flex: 1,
         paddingTop: 10,
     },
@@ -152,6 +155,7 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
     titre: {
+        color: colors.textPrimary,
         fontSize: 16,
         fontWeight: '500',
         marginVertical: 5,
