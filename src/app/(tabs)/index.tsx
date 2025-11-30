@@ -54,8 +54,6 @@ function IndexSetup() {
   const renderItem = ({ item }: { item: game }) => (
     <View style={styles.item}>
       <Card>
-        <Image style={styles.image} source={getGameImage(item.AppID)} />
-        <Text style={styles.titre}>{item.Name} </Text>
         <Pressable
           onPress={() => {
             router.push({
@@ -73,10 +71,13 @@ function IndexSetup() {
             });
           }}
         >
+          <Image style={styles.image} source={getGameImage(item.AppID)} />
+          <Text style={styles.titre}>{item.Name} </Text>
+
           <Tags tags={item.Tags} />
           <Pressable
             onPress={removeLiked}
-            style={{ marginBottom:spacing.extrasmall, flex: 1 }}
+            style={{ marginBottom: spacing.extrasmall, flex: 1 }}
           >
             <Like id={item.AppID} />
           </Pressable>
