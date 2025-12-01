@@ -4,3 +4,4 @@ src/.expo/
 src/.vscode/
 .env
 .DS_Store
+src/database/temp.json
