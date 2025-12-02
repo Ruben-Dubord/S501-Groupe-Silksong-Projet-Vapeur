@@ -6,6 +6,9 @@ import { colors,fonts,fontSize,spacing } from "@/themes/themes";
 import Like from "@/components/Like";
 import Card from "@/components/Card";
 import Tags from "@/components/Tags";
+import "@/scripts/recommendations"
+import { getRecommendations } from "@/scripts/recommendations";
+import { updateUserPreferences } from "@/scripts/storage";
 
 const styles= StyleSheet.create({
   titre: { color:'white',fontSize: fontSize.large, fontFamily: fonts.bold, flexWrap:'nowrap', marginVertical: spacing.small},
@@ -29,13 +32,38 @@ function IndexSetup() {
     Liked: boolean;
   };
 
-  const { getUnlikedGames } = useFetchers();
+  const { getUnlikedGames, getLikedGames, getAllTagsOneGame, getAllTags } = useFetchers();
   const [games, setGames] = useState<game[]>([]);
 
   useEffect(() => {
     async function load() {
-      const data = await getUnlikedGames();
-      setGames(data as game[]);
+      const unlikedGames = await getUnlikedGames() as game[];
+      const likedGame = await getLikedGames() as game[];
+      let initialPreferences: Record<string, number> = {};
+      if (likedGame.length == 0){
+        const tags = await getAllTags();
+        tags.forEach((tag: string) => {
+          initialPreferences[tag] = 0.5; // Valeur initiale neutre
+        });
+      } else {
+        for(let g of likedGame){
+          const gameTags = await getAllTagsOneGame(g.AppID);
+          gameTags.forEach((tag: string) => {
+          if(initialPreferences[tag]){
+              initialPreferences[tag] += 0.5;
+            } else {
+              initialPreferences[tag] = 0.5;
+            }
+          });
+        }
+      }
+      await updateUserPreferences(initialPreferences);
+      const scoredGames = await getRecommendations(unlikedGames);
+      let data: game[] = [];
+      for (let g of scoredGames) {
+        data.push(g.gameData)
+      }
+      setGames(data);
     }
     load();
   }, []);
@@ -43,8 +71,13 @@ function IndexSetup() {
 /* remove liked game from list when liked */
   function removeLiked() {
     async function refreshLikedGames() {
-      const data = await getUnlikedGames();
-      setGames(data as game[]);
+      const unlikedGames = await getUnlikedGames() as game[];
+      const scoredGames = await getRecommendations(unlikedGames);
+      let data: game[] = [];
+      for (let g of scoredGames) {
+        data.push(g.gameData)
+      }
+      setGames(data);
     }
     refreshLikedGames();}
 

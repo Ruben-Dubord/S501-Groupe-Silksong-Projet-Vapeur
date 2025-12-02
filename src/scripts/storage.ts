@@ -1,5 +1,5 @@
 // scripts/storage.ts
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const USER_PREFERENCES_KEY = 'userPreferences';
 const USER_HISTORY_KEY = 'userHistory';
