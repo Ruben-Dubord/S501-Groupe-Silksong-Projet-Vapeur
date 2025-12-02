@@ -69,7 +69,6 @@ export default function Like(props: { id: number }) {
               fontWeight: "600",
             }}
           >
-            Liked
           </Text>
         )}
       </Animated.View>
