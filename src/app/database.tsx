@@ -1,5 +1,19 @@
 import { SQLiteProvider, useSQLiteContext } from "expo-sqlite";
 import { gameImages } from "../assets/images/GameImages";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+
+type game = {
+  AppID: number;
+  Name: string;
+  RequiredAge: number;
+  Price: number;
+  Description: string;
+  HeaderImage: string;
+  Developers: string;
+  Publishers: string;
+  Tags: string;
+  Liked: boolean;
+};
 
 export default function DBProvider({children}: any) {
   return (
@@ -26,7 +40,7 @@ export function useFetchers() {
   };
 
   const getUnlikedGames = async () => {
-    const games = await db.getAllAsync("SELECT * FROM games WHERE Liked = 0 ORDER BY Name;");
+    const games = await db.getAllAsync("SELECT * FROM games WHERE Liked = 0 ORDER BY RANDOM();");
     return games;
   };
 
@@ -51,15 +65,29 @@ export function useFetchers() {
     return rows[0].count;
   };
 
+  const getAllTags = async () => {
+    const games = await getAllGames();
+    let tags : string[] = [];
+    games.forEach((game: any) => {
+      const gameTags = game.Tags.split(',').map((tag: string) => tag.trim());
+      tags = [...new Set([...tags, ...gameTags])];
+    });
+    return tags;
+  };
 
-
-
+  const getAllTagsOneGame = async (appId: number) => {
+    const game: any = await db.getFirstAsync("SELECT * FROM games WHERE AppID = ?;", [appId]);
+    const tags = game.Tags.split(',').map((tag: string) => tag.trim());
+    return tags;
+  }
 
   return {
     getAllGames,
     getUnlikedGames,
     getLikedGames,
     setGameLikedStatus,
-    getNumberOfLikedGames
+    getNumberOfLikedGames,
+    getAllTags,
+    getAllTagsOneGame
   };
 }

@@ -1,20 +1,23 @@
 // src/scripts/recommendation.ts
 import { getUserPreferences, getUserHistory } from './storage';
-import gamesData from '../database/games.json';
 
 // Définir le type pour un jeu
-type Game = {
+type game = {
   AppID: number;
   Name: string;
-  Tags: string[];
+  RequiredAge: number;
+  Price: number;
+  Description: string;
+  HeaderImage: string;
+  Developers: string;
+  Publishers: string;
+  Tags: string;
+  Liked: boolean;
 };
 
-// Vérifier que gamesData est bien typé
-const validatedGamesData: Game[] = gamesData.map(game => ({
-  AppID: game.AppID,
-  Name: game.Name,
-  Tags: Array.isArray(game.Tags) ? game.Tags : [],
-}));
+function str_to_array(str: string): string[] {
+  return str.split(',').map(tag => tag.trim());
+}
 
 /**
  * Calcule le coefficient de Dice entre les tags préférés de l'utilisateur et les tags d'un jeu.
@@ -42,11 +45,11 @@ const diceCoefficient = (userTags: Record<string, number>, gameTags: string[]): 
  * @param preferences - Les préférences de l'utilisateur.
  * @returns Le score du jeu (entre 0 et 1).
  */
-const calculateGameScore = (game: Game, preferences: Record<string, number>): number => {
-  const diceScore = diceCoefficient(preferences, game.Tags);
+const calculateGameScore = (game: game, preferences: Record<string, number>): number => {
+  const diceScore = diceCoefficient(preferences, str_to_array(game.Tags));
 
   // Calculer la préférence moyenne pour les tags du jeu
-  const relevantTags = game.Tags.filter(tag => preferences[tag] !== undefined);
+  const relevantTags = str_to_array(game.Tags).filter(tag => preferences[tag] !== undefined);
   if (relevantTags.length === 0) return 0;
 
   const avgPreference = relevantTags.reduce((sum, tag) => sum + (preferences[tag] || 0), 0) / relevantTags.length;
@@ -58,14 +61,18 @@ const calculateGameScore = (game: Game, preferences: Record<string, number>): nu
  * Récupère les recommandations de jeux pour l'utilisateur.
  * @returns Une liste de jeux triée par score décroissant.
  */
-export const getRecommendations = async (): Promise<Array<{ gameId: number; score: number; name: string }>> => {
+export async function getRecommendations(validatedGamesData: game[]): Promise<Array<{ gameData: game; score: number; }>> {
   try {
     const preferences = await getUserPreferences();
     const history = await getUserHistory();
 
     // Si aucune préférence n'est définie, retourner une liste vide
     if (Object.keys(preferences).length === 0) {
-      return [];
+      let freshData : Array<{ gameData: game; score: number; }> = [{ gameData: validatedGamesData[0], score: 0 }];
+      validatedGamesData.forEach(game => {
+        freshData.push({ gameData: game, score: 0 });
+      });
+      return freshData;
     }
 
     const scoredGames = validatedGamesData.map(game => {
@@ -78,16 +85,15 @@ export const getRecommendations = async (): Promise<Array<{ gameId: number; scor
         score += likedFactor;
       });
 
-      return { gameId: game.AppID, score, name: game.Name };
+      return { gameData: game, score };
     });
 
     // Trier par score décroissant
     scoredGames.sort((a, b) => b.score - a.score);
-
-    // Retourner uniquement les jeux avec un score > 0
-    return scoredGames.filter(game => game.score > 0);
+    return scoredGames;
   } catch (error) {
     console.error("Erreur dans getRecommendations:", error);
     return [];
   }
 };
+
