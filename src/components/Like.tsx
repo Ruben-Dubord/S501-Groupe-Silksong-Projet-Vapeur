@@ -58,7 +58,7 @@ export default function Like(props: { id: number }) {
         }}
       >
         <Text style={{ fontSize: 28 }}>
-          {isLoading ? "⏳" : isLiked ? "❤️" : "🤍"}
+          {isLoading ? "❤️" : isLiked ? "❤️" : "🤍"}
         </Text>
         {isLiked && (
           <Text
