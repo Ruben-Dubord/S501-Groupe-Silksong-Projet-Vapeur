@@ -3,7 +3,7 @@
 Une application mobile permettant la recommandation d'éléments à l'utilisateur sans qu'il n'ait besoin de se connecter.  
 On utilise des jeux vidéo comme données, et les tags pour faire des recommandations.
 
-## particularités V1
+## Particularités V1
 ### Fonctionnement
 - Les recommandations sont calculées quand on ouvre l'app. Pour tester, il faut liker et rouvrir.
 - Settings n'est pas encore opérationnel.
