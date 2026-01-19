@@ -11,7 +11,7 @@ const Expandable = ({children, maxChars=200}) => {
 
     return (
         <>
-            <Text style={{ margin: 10 }}>{text}</Text>
+            <Text>{text}</Text>
             <Text style = {{ color: 'lightblue' }} onPress={() => setExpanded(!expanded)}>{expanded? "...   Voir plus": "    Voir moins"}</Text>
         </>
     )

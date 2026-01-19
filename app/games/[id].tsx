@@ -4,6 +4,7 @@ import { getGameImage } from "@/app/database";
 import { colors, fontSize } from "@/themes/themes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Expandable from "@/components/Expandable";
+import { Tags } from "@/components/Tags";
 
 export default function game() {
 
@@ -55,8 +56,7 @@ export default function game() {
       </View>
       <SafeAreaView>
       <Text style={ styles.text }>
-          <Text style={{ fontWeight: "bold" }}>Tags : </Text>
-          {"\n"}{params.tags.toString().replaceAll(",", ", ")}
+          <Tags tags={params.tags.toString().replaceAll(",", ", ")}></Tags>
         </Text>
 
         <Text style={ styles.text }>
