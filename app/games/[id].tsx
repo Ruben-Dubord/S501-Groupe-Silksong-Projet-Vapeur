@@ -1,74 +1,80 @@
 import { Stack, useLocalSearchParams} from "expo-router";
-import { Text, Image, ScrollView, View } from "react-native";
+import { Text, Image, ScrollView, View, StyleSheet } from "react-native";
 import { getGameImage } from "@/app/database";
+import { colors, fontSize } from "@/themes/themes";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Expandable from "@/components/Expandable";
+import { Tags } from "@/components/Tags";
 
 export default function game() {
 
   const params = useLocalSearchParams();
 
   return (
-    
-    <View>
+
+    <ScrollView style={{ padding: 10, paddingBottom: 60, backgroundColor: colors.background }}>
       <Stack.Screen
         options={{
           title: params.name as string,
         }}
       />
-      <ScrollView contentContainerStyle={{ alignItems: "center", padding: 10, paddingBottom: 60 }}>
-        <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-          Nom du jeu : {params.name}
-        </Text>
-
-        <Text style={{ fontWeight: "bold" }}>
-          ID Steam : {params.id}
-        </Text>
+      <View style={{  padding: 10, backgroundColor: colors.headerBackground }}>
 
         <Image
           source={getGameImage(Number(params.id))}
-          style={{ width: "95%" }}
+          style={{ width: "100%" }}
           resizeMode="contain"
         />
 
-        <Text style={{ textAlign: "center", fontSize: 16 }}>
-          <Text style={{ fontWeight: "bold" }}>Age requis : </Text>
-          {params.requiredAge}
+        <Text style={ styles.title }>
+          {params.name}
         </Text>
 
-        <Text style={{ textAlign: "center", fontSize: 16 }}>
-          <Text style={{ fontWeight: "bold" }}>Prix : </Text>
+        <Text style={ styles.title }>
           {params.price} $
         </Text>
 
-        <Text style={{ textAlign: "center", fontSize: 16 }}>
+        <Text style={ styles.text }>
           <Text style={{ fontWeight: "bold" }}>Description : {"\n"}</Text>
-          <Text style={{ margin: 10 }}>{params.description}</Text>
+          <Expandable>{params.description}</Expandable>
         </Text>
 
-        <Text style={{ textAlign: "center", fontSize: 16 }}>
+        <Text style={ styles.text }>
           <Text style={{ fontWeight: "bold" }}>Développeurs : </Text>
           {params.developers}
         </Text>
 
-        <Text style={{ textAlign: "center", fontSize: 16 }}>
+        <Text style={ styles.text }>
           <Text style={{ fontWeight: "bold" }}>Éditeurs : </Text>
           {params.publishers}
         </Text>
 
-        <Text style={{ textAlign: "center", fontSize: 16 }}>
-          <Text style={{ fontWeight: "bold" }}>Tags : </Text>
-          {"\n"}{params.tags.toString().replaceAll(",", ", ")}
+        <Text style={ styles.text}>
+          <Text style={{ fontWeight: "bold" }}>Age requis : </Text>
+          {params.requiredAge}
         </Text>
-      </ScrollView>
-     <View
-        style={{
-          position: "absolute",
-          bottom: 40,
-          left: 0,
-          right: 0,
-          alignItems: "center",
-        }}
-      >
       </View>
-    </View>
+      <SafeAreaView>
+      <Text style={ styles.text }>
+          <Tags tags={params.tags.toString().replaceAll(",", ", ")}></Tags>
+        </Text>
+
+        <Text style={ styles.text }>
+          ID Steam : {params.id}
+        </Text>
+      </SafeAreaView>
+    </ScrollView>
   );
 } 
+
+const styles = StyleSheet.create({
+  title: {
+    color: colors.textPrimary,
+    fontSize: fontSize.extralarge,
+    fontWeight: "bold"
+  },
+  text: {
+    color: colors.textPrimary,
+    fontSize: fontSize.extrasmall
+  }
+});
