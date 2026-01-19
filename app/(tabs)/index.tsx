@@ -69,17 +69,16 @@ function IndexSetup() {
   }, []);
 
 /* remove liked game from list when liked */
-  function removeLiked() {
-    async function refreshLikedGames() {
-      const unlikedGames = await getUnlikedGames() as game[];
-      const scoredGames = await getRecommendations(unlikedGames);
-      let data: game[] = [];
-      for (let g of scoredGames) {
-        data.push(g.gameData)
-      }
-      setGames(data);
+  async function refreshLikedGames() {
+    const unlikedGames = await getUnlikedGames() as game[];
+    const scoredGames = await getRecommendations(unlikedGames);
+    let data: game[] = [];
+    for (let g of scoredGames) {
+      data.push(g.gameData)
     }
-    refreshLikedGames();}
+    setGames(data);
+    refreshing = false;
+  }
 
   const numColumns = 1;
 
@@ -108,10 +107,7 @@ function IndexSetup() {
           <Text style={styles.titre}>{item.Name} </Text>
 
           <Tags tags={item.Tags} />
-          <Pressable
-            onPress={removeLiked}
-            style={{ marginBottom: spacing.extrasmall, flex: 1 }}
-          >
+          <Pressable style={{ marginBottom: spacing.extrasmall, flex: 1 }}>
             <Like id={item.AppID} />
           </Pressable>
         </Pressable>
@@ -119,6 +115,12 @@ function IndexSetup() {
     </View>
   );
 
+  let refreshing = false;
+
+  function onRefresh() {
+    refreshing = true;
+    refreshLikedGames();
+  }
   
   return (
    <View>
@@ -128,6 +130,8 @@ function IndexSetup() {
         data={games}
         renderItem={renderItem}
         numColumns={numColumns}
+        onRefresh={() => onRefresh()}
+        refreshing={refreshing}
       />
     </View>
   );
