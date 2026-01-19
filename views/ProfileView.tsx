@@ -38,20 +38,6 @@ export default function App() {
             </Link>
         </Card>
 
-        
-        <Card>
-            <Link href="/settings"> 
-                <View style={styles.rowContainer}>
-                    <Image source={require('@/assets/images/settings-icon.png')} style={styles.category} />
-                    
-                    <View style= {styles.textColumn}>
-                        <Text style={styles.categoryTitle}>Your settings</Text>
-                        <Text style={styles.recentFavoriteDate}>App preferences</Text>
-                    </View>
-                </View>
-            </Link>
-        </Card>
-
     </ScrollView>
   );
 }
