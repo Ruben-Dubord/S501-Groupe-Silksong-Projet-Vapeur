@@ -135,8 +135,6 @@ function IndexSetup() {
 
 export default function Index() {
   return (
-    <DBProvider>
       <IndexSetup />
-    </DBProvider>
   );
 }
