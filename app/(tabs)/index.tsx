@@ -83,8 +83,8 @@ function IndexSetup() {
   const numColumns = 1;
 
   /* render item(game) for FlatList */
-  const renderItem = ({ item }: { item: game }) => (
-    <View style={styles.item}>
+  const ListItem = React.memo(({ item }: { item: game }) => {
+    return <View style={styles.item}>
       <Card>
         <Pressable
           onPress={() => {
@@ -113,7 +113,9 @@ function IndexSetup() {
         </Pressable>
       </Card>
     </View>
-  );
+  }
+);
+  const renderItem = ({ item }: { item: game }) => <ListItem item={item} />;
 
   let refreshing = false;
 
