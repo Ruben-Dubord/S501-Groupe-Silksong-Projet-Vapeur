@@ -81,6 +81,14 @@ export function useFetchers() {
     return tags;
   }
 
+  const setAllGamesLikedStatus = async (liked: boolean) => {
+    if (liked) {
+      await db.runAsync("UPDATE games SET Liked = 1;");
+    } else {
+      await db.runAsync("UPDATE games SET Liked = 0;");
+    }
+  }
+
   return {
     getAllGames,
     getUnlikedGames,
@@ -88,6 +96,7 @@ export function useFetchers() {
     setGameLikedStatus,
     getNumberOfLikedGames,
     getAllTags,
-    getAllTagsOneGame
+    getAllTagsOneGame,
+    setAllGamesLikedStatus,
   };
 }

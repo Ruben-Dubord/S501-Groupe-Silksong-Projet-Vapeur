@@ -36,7 +36,7 @@ type Game = {
 };
 
 export default function App() {
-  const { setGameLikedStatus, getLikedGames } = useFetchers();
+  const { setGameLikedStatus, getLikedGames, setAllGamesLikedStatus } = useFetchers();
   const [games, setGames] = useState<Game[]>([]);
 
   useEffect(() => {
@@ -64,6 +64,23 @@ export default function App() {
     );
   };
 
+  const handleUnlikeAll = () => {
+      Alert.alert(
+        "Confirm Deletion",
+        "Are you sure you want to remove all games from your favorites?",
+        [
+          { text: "Cancel", style: "cancel" },
+        {
+          text: "OK",
+          onPress: async () => {
+            await setAllGamesLikedStatus(false);
+            setGames([]);
+          },
+        },
+      ]
+    );
+  };
+
   if (games.length === 0) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -72,7 +89,6 @@ export default function App() {
           style={{
             textAlign: "center",
             marginBottom: 20,
-            color: colors.textPrimary,
           }}
         >
           You have no favorites.
@@ -128,7 +144,9 @@ export default function App() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <Stack.Screen options={{ title: "Your Favorites" }} />
-      <Text style={styles.title}>Here are your favorite games!</Text>
+      <Text style={[styles.title, { color: colors.textPrimary }]}>
+        Here are your favorite games!
+      </Text>
       <FlatList
         style={styles.container}
         keyExtractor={(game) => game.AppID.toString()}
@@ -136,13 +154,19 @@ export default function App() {
         renderItem={renderItem}
         numColumns={numColumns}
       />
+
+    <TouchableOpacity
+          style={styles.unlikeButton}
+          onPress={() => handleUnlikeAll()}
+        >
+          <Text style={styles.unlikeButtonText}>Unlike all games</Text>
+        </TouchableOpacity>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   title: {
-    color: colors.textPrimary,
     fontSize: 24,
     fontWeight: "600",
     marginBottom: 20,
