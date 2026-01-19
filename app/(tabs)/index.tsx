@@ -69,23 +69,22 @@ function IndexSetup() {
   }, []);
 
 /* remove liked game from list when liked */
-  function removeLiked() {
-    async function refreshLikedGames() {
-      const unlikedGames = await getUnlikedGames() as game[];
-      const scoredGames = await getRecommendations(unlikedGames);
-      let data: game[] = [];
-      for (let g of scoredGames) {
-        data.push(g.gameData)
-      }
-      setGames(data);
+  async function refreshLikedGames() {
+    const unlikedGames = await getUnlikedGames() as game[];
+    const scoredGames = await getRecommendations(unlikedGames);
+    let data: game[] = [];
+    for (let g of scoredGames) {
+      data.push(g.gameData)
     }
-    refreshLikedGames();}
+    setGames(data);
+    refreshing = false;
+  }
 
   const numColumns = 1;
 
   /* render item(game) for FlatList */
-  const renderItem = ({ item }: { item: game }) => (
-    <View style={styles.item}>
+  const ListItem = React.memo(({ item }: { item: game }) => {
+    return <View style={styles.item}>
       <Card>
         <Pressable
           onPress={() => {
@@ -108,17 +107,22 @@ function IndexSetup() {
           <Text style={styles.titre}>{item.Name} </Text>
 
           <Tags tags={item.Tags} />
-          <Pressable
-            onPress={removeLiked}
-            style={{ marginBottom: spacing.extrasmall, flex: 1 }}
-          >
+          <Pressable style={{ marginBottom: spacing.extrasmall, flex: 1 }}>
             <Like id={item.AppID} />
           </Pressable>
         </Pressable>
       </Card>
     </View>
-  );
+  }
+);
+  const renderItem = ({ item }: { item: game }) => <ListItem item={item} />;
 
+  let refreshing = false;
+
+  function onRefresh() {
+    refreshing = true;
+    refreshLikedGames();
+  }
   
   return (
    <View>
@@ -128,6 +132,8 @@ function IndexSetup() {
         data={games}
         renderItem={renderItem}
         numColumns={numColumns}
+        onRefresh={() => onRefresh()}
+        refreshing={refreshing}
       />
     </View>
   );
@@ -135,8 +141,6 @@ function IndexSetup() {
 
 export default function Index() {
   return (
-    <DBProvider>
       <IndexSetup />
-    </DBProvider>
   );
 }
