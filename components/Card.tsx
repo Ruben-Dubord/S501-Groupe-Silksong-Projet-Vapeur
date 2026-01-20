@@ -9,7 +9,6 @@ export default function Card(props: { children: React.ReactNode }) {
   return (
     // Vue principale de la carte avec les styles définis
     <View style={StyleSheet.card}>
-      // Vue interne pour le contenu avec padding
       <View style={StyleSheet.cardContent}>{props.children}</View>
     </View>
   );

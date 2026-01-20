@@ -55,7 +55,6 @@ export default function Like(props: { id: number }) {
         opacity: isLoading || !props.id ? 0.5 : 1,
       }}
     >
-      // Vue animée avec effet de mise à l'échelle
       <Animated.View
         style={{
           transform: [{ scale: scaleAnim }],
@@ -66,11 +65,9 @@ export default function Like(props: { id: number }) {
           justifyContent: "center",
         }}
       >
-        // Emoji cœur qui change selon le statut de like et le chargement
         <Text style={{ fontSize: 28 }}>
           {isLoading ? "❤️" : isLiked ? "❤️" : "🤍"}
         </Text>
-        // Texte optionnel sous le cœur quand aimé (actuellement vide)
         {isLiked && (
           <Text
             style={{

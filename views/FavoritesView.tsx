@@ -55,8 +55,8 @@ export default function App() {
   // Gestionnaire pour retirer un jeu des favoris
   const handleUnlike = (id: number) => {
     Alert.alert(
-      "Confirmer la suppression",
-      "Êtes-vous sûr de vouloir retirer ce jeu de vos favoris ?",
+      "Confirm Deletion",
+      "Are you sure you want to remove this game from your favorites?",
       [
         { text: "Annuler", style: "cancel" },
         {
@@ -73,8 +73,8 @@ export default function App() {
   // Gestionnaire pour retirer tous les jeux des favoris
   const handleUnlikeAll = () => {
       Alert.alert(
-        "Confirmer la suppression",
-        "Êtes-vous sûr de vouloir retirer tous les jeux de vos favoris ?",
+        "Confirm Deletion",
+        "Are you sure you want to remove all games from your favorites?",
         [
           { text: "Annuler", style: "cancel" },
         {
@@ -91,19 +91,19 @@ export default function App() {
   // Si aucun jeu favori, afficher un message
   if (games.length === 0) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text style={styles.title}>Commencez à aimer des jeux !</Text>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" , backgroundColor: colors.background }}>
+        <Text style={styles.title}>Here are your favorite games!</Text>
         <Text
           style={{
             textAlign: "center",
             marginBottom: 20,
           }}
         >
-          Vous n'avez pas de favoris.
+          You have no favorite games yet. Go back to the home page to discover and like games!
         </Text>
         <Link href="/" asChild>
-          <TouchableOpacity style={styles.discoverButton}>
-            <Text style={styles.discoverButtonText}>Retour à l'accueil</Text>
+          <TouchableOpacity style={styles.unlikeButton}>
+            <Text style={styles.unlikeButtonText}>Home</Text>
           </TouchableOpacity>
         </Link>
       </View>

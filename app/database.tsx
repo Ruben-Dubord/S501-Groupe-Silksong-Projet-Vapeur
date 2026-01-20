@@ -1,6 +1,5 @@
 import { SQLiteProvider, useSQLiteContext } from "expo-sqlite";
 import { gameImages } from "../assets/images/GameImages";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 type game = {
   AppID: number;

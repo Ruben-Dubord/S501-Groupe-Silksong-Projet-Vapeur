@@ -6,8 +6,6 @@ import {
   FlatList, 
   StyleSheet, 
   Pressable, 
-  TextInput, 
-  Platform 
 } from "react-native";
 import { useFetchers, getGameImage } from "@/app/database";
 import React, { useEffect, useState, useCallback } from "react";
@@ -189,10 +187,10 @@ function IndexSetup() {
           <View style={{ padding: spacing.large, alignItems: 'center' }}>
             <Text style={{ color: '#888', fontSize: fontSize.medium }}>
               {games.length === 0 
-                ? 'Chargement des jeux...' 
+                ? 'loading games...' 
                 : searchQuery 
-                  ? 'Aucun jeu ne correspond à votre recherche' 
-                  : 'Aucun jeu disponible'}
+                  ? 'no games found' 
+                  : 'games unavailable'}
             </Text>
           </View>
         }
