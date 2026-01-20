@@ -4,7 +4,6 @@ import * as SystemUI from "expo-system-ui";
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from "react";
 import { Platform, View } from "react-native";
-import DBProvider from "@/app/database";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -49,7 +48,6 @@ export default function RootLayout() {
   }
 
   return (
-    <DBProvider>
     <View style={{ flex: 1 }} onLayout={onLayout}>
       <Stack
         screenOptions={{
@@ -86,6 +84,6 @@ export default function RootLayout() {
 
       }}/>
       </Stack>
-    </View></DBProvider>
+    </View>
   );
 }
