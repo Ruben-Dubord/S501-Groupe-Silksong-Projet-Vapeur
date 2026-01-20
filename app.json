@@ -4,7 +4,7 @@
     "slug": "vapeur",
     "version": "1.1.0",
     "orientation": "portrait",
-    "icon": "./assets/images/logopetit.png",
+    "icon": "./assets/images/logo.png",
     "scheme": "vapeur",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
