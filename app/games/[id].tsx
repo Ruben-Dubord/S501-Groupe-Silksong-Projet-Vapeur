@@ -40,17 +40,17 @@ export default function game() {
         </Text>
 
         <Text style={ styles.text }>
-          <Text style={{ fontWeight: "bold" }}>Développeurs : </Text>
+          <Text style={{ fontWeight: "bold" }}>Developers : </Text>
           {params.developers}
         </Text>
 
         <Text style={ styles.text }>
-          <Text style={{ fontWeight: "bold" }}>Éditeurs : </Text>
+          <Text style={{ fontWeight: "bold" }}>Publishers : </Text>
           {params.publishers}
         </Text>
 
         <Text style={ styles.text}>
-          <Text style={{ fontWeight: "bold" }}>Age requis : </Text>
+          <Text style={{ fontWeight: "bold" }}>Required age : </Text>
           {params.requiredAge}
         </Text>
       </View>

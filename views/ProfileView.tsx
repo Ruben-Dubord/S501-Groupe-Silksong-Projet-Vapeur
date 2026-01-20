@@ -27,7 +27,7 @@ export default function App() {
   return (
     // ScrollView pour permettre le défilement
     <ScrollView style={{ flex: 1, backgroundColor: colors.background, padding: spacing.large }}>
-        <Text style={styles.title}>Bienvenue sur votre profil !</Text>
+        <Text style={styles.title}>Welcome to your profile !</Text>
         
         <Card>
             <Link href="/favorites">
@@ -35,8 +35,8 @@ export default function App() {
                     <Image source={require('@/assets/images/favorites-icon.png')} style={styles.category} />
                     
                     <View style= {styles.textColumn}>
-                        <Text style={styles.categoryTitle}>Vos jeux favoris</Text>
-                        <Text style={styles.recentFavoriteDate}>{likedCount} jeux aimés</Text>
+                        <Text style={styles.categoryTitle}>Your favorite games</Text>
+                        <Text style={styles.recentFavoriteDate}>{likedCount} liked games</Text>
                     </View>
                 </View>
             </Link>

@@ -45,7 +45,7 @@ export default function SearchBar({ searchQuery, setSearchQuery }: SearchBarProp
         <Search size={20} color="#888" />
         <TextInput
           style={styles.searchInput}
-          placeholder="Rechercher un jeu..."
+          placeholder="Look for a game..."
           placeholderTextColor="#888"
           value={searchQuery}
           onChangeText={setSearchQuery}

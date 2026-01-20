@@ -92,7 +92,7 @@ export default function App() {
   if (games.length === 0) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" , backgroundColor: colors.background }}>
-        <Stack.Screen options={{ title: "Vos Favoris" }} />
+        <Stack.Screen options={{ title: "Your favorites" }} />
         <Text style={styles.title}>Here are your favorite games!</Text>
         <Text
           style={{
@@ -147,7 +147,7 @@ export default function App() {
           style={styles.unlikeButton}
           onPress={() => handleUnlike(item.AppID)}
         >
-          <Text style={styles.unlikeButtonText}>Ne plus aimer</Text>
+          <Text style={styles.unlikeButtonText}>Dislike</Text>
         </TouchableOpacity>
       </Card>
     </View>
@@ -155,9 +155,9 @@ export default function App() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
-      <Stack.Screen options={{ title: "Vos Favoris" }} />
+      <Stack.Screen options={{ title: "Your favorites" }} />
       <Text style={[styles.title, { color: colors.textPrimary }]}>
-        Voici vos jeux favoris !
+        Here are your favorite games!
       </Text>
       <FlatList
         style={styles.container}
@@ -171,7 +171,7 @@ export default function App() {
           style={styles.unlikeButton}
           onPress={() => handleUnlikeAll()}
         >
-          <Text style={styles.unlikeButtonText}>Ne plus aimer tous les jeux</Text>
+          <Text style={styles.unlikeButtonText}>Dislike all games</Text>
         </TouchableOpacity>
     </SafeAreaView>
   );
