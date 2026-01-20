@@ -5,12 +5,15 @@ import { useFetchers } from "@/app/database";
 import { useEffect, useState} from 'react';
 import { colors, spacing } from '@/themes/themes';
 
+// Composant principal pour la vue profil
 export default function App() {
 
+  // Hook pour obtenir le nombre de jeux aimés
   const {getNumberOfLikedGames} = useFetchers();
+  // État pour stocker le nombre de jeux aimés
   const [likedCount, setLikedCount] = useState<number>(0);
   
-  // Rafraîchit le compteur toutes les 3 secondes mais ne re-render que si la valeur change
+  // Rafraîchit le compteur toutes les secondes mais ne re-render que si la valeur change
   useEffect(() => {
     const interval = setInterval(async () => {
       const liked = await getNumberOfLikedGames();
@@ -22,8 +25,9 @@ export default function App() {
 
 
   return (
+    // ScrollView pour permettre le défilement
     <ScrollView style={{ flex: 1, backgroundColor: colors.background, padding: spacing.large }}>
-        <Text style={styles.title}>Welcome to your profile !</Text>
+        <Text style={styles.title}>Bienvenue sur votre profil !</Text>
         
         <Card>
             <Link href="/favorites">
@@ -31,8 +35,8 @@ export default function App() {
                     <Image source={require('@/assets/images/favorites-icon.png')} style={styles.category} />
                     
                     <View style= {styles.textColumn}>
-                        <Text style={styles.categoryTitle}>Your favorite games</Text>
-                        <Text style={styles.recentFavoriteDate}>{likedCount} games liked</Text>
+                        <Text style={styles.categoryTitle}>Vos jeux favoris</Text>
+                        <Text style={styles.recentFavoriteDate}>{likedCount} jeux aimés</Text>
                     </View>
                 </View>
             </Link>
@@ -42,6 +46,7 @@ export default function App() {
   );
 }
 
+// Styles pour le composant
 const styles = StyleSheet.create({
   title: {
     color:colors.textPrimary,

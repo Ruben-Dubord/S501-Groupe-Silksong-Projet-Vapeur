@@ -16,12 +16,13 @@ import { getGameImage, useFetchers } from "@/app/database";
 import { Stack } from "expo-router";
 import { colors } from "@/themes/themes";
 
-// ---- Responsive Layout ----
+// ---- Mise en page responsive ----
 const screenWidth = Dimensions.get("window").width;
-const numColumns = 3;
-const ITEM_MARGIN = 6;
-const ITEM_WIDTH = (screenWidth - ITEM_MARGIN * (numColumns * 2)) / numColumns;
+const numColumns = 3; // Nombre de colonnes dans la grille
+const ITEM_MARGIN = 6; // Marge entre les éléments
+const ITEM_WIDTH = (screenWidth - ITEM_MARGIN * (numColumns * 2)) / numColumns; // Largeur d'un élément
 
+// Type pour un jeu
 type Game = {
   AppID: number;
   Name: string;
@@ -35,10 +36,14 @@ type Game = {
   Liked: boolean;
 };
 
+// Composant principal pour afficher les favoris
 export default function App() {
+  // Hooks pour gérer les favoris
   const { setGameLikedStatus, getLikedGames, setAllGamesLikedStatus } = useFetchers();
+  // État pour stocker la liste des jeux favoris
   const [games, setGames] = useState<Game[]>([]);
 
+  // Charger les jeux favoris au montage du composant
   useEffect(() => {
     async function load() {
       const liked = await getLikedGames();
@@ -47,12 +52,13 @@ export default function App() {
     load();
   }, []);
 
+  // Gestionnaire pour retirer un jeu des favoris
   const handleUnlike = (id: number) => {
     Alert.alert(
-      "Confirm Deletion",
-      "Are you sure you want to remove this game from your favorites?",
+      "Confirmer la suppression",
+      "Êtes-vous sûr de vouloir retirer ce jeu de vos favoris ?",
       [
-        { text: "Cancel", style: "cancel" },
+        { text: "Annuler", style: "cancel" },
         {
           text: "OK",
           onPress: async () => {
@@ -64,12 +70,13 @@ export default function App() {
     );
   };
 
+  // Gestionnaire pour retirer tous les jeux des favoris
   const handleUnlikeAll = () => {
       Alert.alert(
-        "Confirm Deletion",
-        "Are you sure you want to remove all games from your favorites?",
+        "Confirmer la suppression",
+        "Êtes-vous sûr de vouloir retirer tous les jeux de vos favoris ?",
         [
-          { text: "Cancel", style: "cancel" },
+          { text: "Annuler", style: "cancel" },
         {
           text: "OK",
           onPress: async () => {
@@ -81,27 +88,29 @@ export default function App() {
     );
   };
 
+  // Si aucun jeu favori, afficher un message
   if (games.length === 0) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text style={styles.title}>Start liking games !</Text>
+        <Text style={styles.title}>Commencez à aimer des jeux !</Text>
         <Text
           style={{
             textAlign: "center",
             marginBottom: 20,
           }}
         >
-          You have no favorites.
+          Vous n'avez pas de favoris.
         </Text>
         <Link href="/" asChild>
           <TouchableOpacity style={styles.discoverButton}>
-            <Text style={styles.discoverButtonText}>Back to Home</Text>
+            <Text style={styles.discoverButtonText}>Retour à l'accueil</Text>
           </TouchableOpacity>
         </Link>
       </View>
     );
   }
 
+  // Fonction pour rendre chaque élément de la liste
   const renderItem = ({ item }: { item: Game }) => (
     <View style={styles.item}>
       <Card>
@@ -135,7 +144,7 @@ export default function App() {
           style={styles.unlikeButton}
           onPress={() => handleUnlike(item.AppID)}
         >
-          <Text style={styles.unlikeButtonText}>Unlike</Text>
+          <Text style={styles.unlikeButtonText}>Ne plus aimer</Text>
         </TouchableOpacity>
       </Card>
     </View>
@@ -143,9 +152,9 @@ export default function App() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
-      <Stack.Screen options={{ title: "Your Favorites" }} />
+      <Stack.Screen options={{ title: "Vos Favoris" }} />
       <Text style={[styles.title, { color: colors.textPrimary }]}>
-        Here are your favorite games!
+        Voici vos jeux favoris !
       </Text>
       <FlatList
         style={styles.container}
@@ -159,12 +168,13 @@ export default function App() {
           style={styles.unlikeButton}
           onPress={() => handleUnlikeAll()}
         >
-          <Text style={styles.unlikeButtonText}>Unlike all games</Text>
+          <Text style={styles.unlikeButtonText}>Ne plus aimer tous les jeux</Text>
         </TouchableOpacity>
     </SafeAreaView>
   );
 }
 
+// Styles pour le composant
 const styles = StyleSheet.create({
   title: {
     fontSize: 24,

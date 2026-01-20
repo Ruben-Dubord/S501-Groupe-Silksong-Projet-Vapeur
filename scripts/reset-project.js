@@ -1,21 +1,27 @@
 #!/usr/bin/env node
 
 /**
- * This script is used to reset the project to a blank state.
- * It deletes or moves the /app, /components, /hooks, /scripts, and /constants directories to /app-example based on user input and creates a new /app directory with an index.tsx and _layout.tsx file.
- * You can remove the `reset-project` script from package.json and safely delete this file after running it.
+ * Ce script est utilisé pour remettre le projet à un état vierge.
+ * Il supprime ou déplace les répertoires /app, /components, /hooks, /scripts et /constants vers /app-example selon l'entrée utilisateur et crée un nouveau répertoire /app avec un fichier index.tsx et _layout.tsx.
+ * Vous pouvez supprimer le script `reset-project` de package.json et supprimer ce fichier en toute sécurité après l'avoir exécuté.
  */
 
 const fs = require("fs");
 const path = require("path");
 const readline = require("readline");
 
+// Répertoire racine du projet
 const root = process.cwd();
+// Anciens répertoires à déplacer ou supprimer
 const oldDirs = ["app", "components", "hooks", "constants", "scripts"];
+// Répertoire d'exemple
 const exampleDir = "app-example";
+// Nouveau répertoire app
 const newAppDir = "app";
+// Chemin du répertoire d'exemple
 const exampleDirPath = path.join(root, exampleDir);
 
+// Contenu du fichier index.tsx
 const indexContent = `import { Text, View } from "react-native";
 
 export default function Index() {
@@ -33,6 +39,7 @@ export default function Index() {
 }
 `;
 
+// Contenu du fichier _layout.tsx
 const layoutContent = `import { Stack } from "expo-router";
 
 export default function RootLayout() {
@@ -40,20 +47,23 @@ export default function RootLayout() {
 }
 `;
 
+// Interface readline pour l'entrée utilisateur
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
+// Fonction pour déplacer ou supprimer les répertoires
 const moveDirectories = async (userInput) => {
   try {
+    // Créer le répertoire app-example si l'utilisateur choisit de déplacer
     if (userInput === "y") {
-      // Create the app-example directory
+      // Créer le répertoire app-example
       await fs.promises.mkdir(exampleDirPath, { recursive: true });
       console.log(`📁 /${exampleDir} directory created.`);
     }
 
-    // Move old directories to new app-example directory or delete them
+    // Déplacer les anciens répertoires vers le nouveau répertoire app-example ou les supprimer
     for (const dir of oldDirs) {
       const oldDirPath = path.join(root, dir);
       if (fs.existsSync(oldDirPath)) {
@@ -70,17 +80,17 @@ const moveDirectories = async (userInput) => {
       }
     }
 
-    // Create new /app directory
+    // Créer le nouveau répertoire /app
     const newAppDirPath = path.join(root, newAppDir);
     await fs.promises.mkdir(newAppDirPath, { recursive: true });
     console.log("\n📁 New /app directory created.");
 
-    // Create index.tsx
+    // Créer index.tsx
     const indexPath = path.join(newAppDirPath, "index.tsx");
     await fs.promises.writeFile(indexPath, indexContent);
     console.log("📄 app/index.tsx created.");
 
-    // Create _layout.tsx
+    // Créer _layout.tsx
     const layoutPath = path.join(newAppDirPath, "_layout.tsx");
     await fs.promises.writeFile(layoutPath, layoutContent);
     console.log("📄 app/_layout.tsx created.");
@@ -98,6 +108,7 @@ const moveDirectories = async (userInput) => {
   }
 };
 
+// Poser une question à l'utilisateur
 rl.question(
   "Do you want to move existing files to /app-example instead of deleting them? (Y/n): ",
   (answer) => {
