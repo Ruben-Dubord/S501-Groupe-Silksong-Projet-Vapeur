@@ -92,18 +92,21 @@ export default function App() {
   if (games.length === 0) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" , backgroundColor: colors.background }}>
+        <Stack.Screen options={{ title: "Vos Favoris" }} />
         <Text style={styles.title}>Here are your favorite games!</Text>
         <Text
           style={{
             textAlign: "center",
             marginBottom: 20,
+            paddingHorizontal: 20,
+            color: colors.textPrimary,
           }}
         >
           You have no favorite games yet. Go back to the home page to discover and like games!
         </Text>
         <Link href="/" asChild>
           <TouchableOpacity style={styles.unlikeButton}>
-            <Text style={styles.unlikeButtonText}>Home</Text>
+            <Text style={styles.unlikeButtonText}>Go back to the Home page</Text>
           </TouchableOpacity>
         </Link>
       </View>
@@ -182,6 +185,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 20,
     textAlign: "center",
+    color: colors.textPrimary,
   },
   container: {
     backgroundColor: colors.background,
