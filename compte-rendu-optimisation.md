@@ -210,6 +210,12 @@ Interprétation : Réduction globale de 50-70%, rendant l'app fluide (seuil <100
 - **Tests t-student** : Test statistique pour vérifier si les différences avant/après sont significatives (pas dues au hasard).
 - **p<0.01** : Probabilité très faible que les résultats soient dus au hasard ; les améliorations sont réelles.
 
+## Nouvelles Fonctionnalités
+
+Une barre de recherche a été ajoutée à l'interface utilisateur, permettant aux utilisateurs de rechercher des jeux par nom. Cette fonctionnalité améliore l'expérience utilisateur en facilitant la navigation dans la bibliothèque de jeux.
+
+Le composant `SearchBar` utilise un `TextInput` avec un placeholder "Rechercher un jeu...", et inclut un bouton pour effacer la recherche. Il est intégré dans l'écran principal pour une accessibilité optimale. Cette addition renforce l'interactivité de l'application sans impacter les performances optimisées de l'algorithme de recommandations.
+
 ## Conclusion
 
 Les optimisations ont transformé un algorithme acceptable en une fonctionnalité hautement performante, avec des gains de 65% sur les temps critiques. L'approche itérative (mesure → optimisation → re-mesure) a permis d'identifier les goulots (calcul Dice répété). Pour une évolution, une migration vers une base SQL (SQLite) permettrait de scaler à 1000+ jeux. Ce rapport démontre une compréhension profonde de l'algorithme et de ses contraintes, avec des métriques quantitatives justifiant les choix.
