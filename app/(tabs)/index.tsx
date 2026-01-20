@@ -17,7 +17,7 @@ import Card from "@/components/Card";
 import Tags from "@/components/Tags";
 import { getRecommendations } from "@/scripts/recommendations";
 import { updateUserPreferences } from "@/scripts/storage";
-import { Search, X } from "lucide-react-native"; 
+import SearchBar from "@/components/SearchBar";
 
 const styles = StyleSheet.create({
   titre: { 
@@ -38,33 +38,6 @@ const styles = StyleSheet.create({
   image: { 
     width: '100%', 
     resizeMode: 'contain' 
-  },
-  // Ajoutez ces nouveaux styles
-  searchContainer: {
-    paddingHorizontal: spacing.medium,
-    paddingVertical: spacing.small,
-    backgroundColor: colors.background,
-  },
-  searchBar: {
-    backgroundColor:'#1e1e1e',
-    borderRadius: 8,
-    paddingHorizontal: spacing.medium,
-    paddingVertical: Platform.OS === 'ios' ? spacing.small : spacing.extrasmall,
-    fontSize: fontSize.medium,
-    fontFamily: fonts.regular,
-    color: 'white',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  searchInput: {
-    flex: 1,
-    color: 'white',
-    fontSize: fontSize.medium,
-    fontFamily: fonts.regular,
-    marginLeft: spacing.small,
-  },
-  clearButton: {
-    padding: spacing.extrasmall,
   },
 });
 const numColumns = 1;
@@ -132,11 +105,17 @@ function IndexSetup() {
       setFilteredGames(games);
     } else {
       const filtered = games.filter(game => 
+        game.Name.toLowerCase().startsWith(searchQuery.toLowerCase())
+      )
+      const filteredTemp = games.filter(game =>
         game.Name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        game.Description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        game.Tags.toLowerCase().includes(searchQuery.toLowerCase()) ||
         game.Developers.toLowerCase().includes(searchQuery.toLowerCase())
       );
+      for (let game of filteredTemp) {
+        if (!filtered.includes(game)) {
+          filtered.push(game);
+        }
+      }
       setFilteredGames(filtered);
     }
   }, [searchQuery, games]);
@@ -153,32 +132,6 @@ function IndexSetup() {
     setGames(data);
     setRefreshing(false);
   }, []);
-
-  // Composant de la barre de recherche
-  const SearchBar = () => (
-    <View style={styles.searchContainer}>
-      <View style={styles.searchBar}>
-        <Search size={20} color="#888" />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Rechercher un jeu..."
-          placeholderTextColor="#888"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          returnKeyType="search"
-          clearButtonMode="while-editing"
-        />
-        {searchQuery.length > 0 && (
-          <Pressable 
-            style={styles.clearButton}
-            onPress={() => setSearchQuery('')}
-          >
-            <X size={20} color="#888" />
-          </Pressable>
-        )}
-      </View>
-    </View>
-  );
 
   // Render item (inchangé)
   const ListItem = React.memo(({ item }: { item: game }) => {
@@ -219,10 +172,12 @@ function IndexSetup() {
   return (
     <View style={{ flex: 1 }}>
       {/* Barre de recherche */}
-      <SearchBar />
+      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       
       {/* Liste des jeux filtrés */}
       <FlatList
+        keyboardDismissMode="none"
+        keyboardShouldPersistTaps="handled"
         style={styles.container}
         keyExtractor={(game) => game.AppID.toString()}
         data={filteredGames}
